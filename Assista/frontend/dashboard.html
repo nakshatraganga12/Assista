@@ -1,0 +1,396 @@
+<html>
+  <head>
+    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin="" />
+    <link
+      rel="stylesheet"
+      as="style"
+      onload="this.rel='stylesheet'"
+      href="https://fonts.googleapis.com/css2?display=swap&family=Lexend%3Awght%40400%3B500%3B700%3B900&family=Noto+Sans%3Awght%40400%3B500%3B700%3B900"
+    />
+
+    <title>Assista Dashboard</title>
+    <link rel="icon" type="image/x-icon" href="data:image/x-icon;base64," />
+
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <style>
+      body {
+        font-family: Lexend, "Noto Sans", sans-serif;
+      }
+      
+      .gradient-bg {
+        background: linear-gradient(135deg, #667eea 0%, hsl(176, 62%, 50%) 100%);
+      }
+      
+      .card-hover {
+        transition: all 0.3s ease;
+      }
+      
+      .card-hover:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+      }
+      
+      .tip-card {
+        background: linear-gradient(135deg, #667eea 0%, hsl(176, 62%, 50%) 100%);
+        border-radius: 16px;
+        padding: 20px;
+        color: white;
+        position: relative;
+        overflow: hidden;
+      }
+      
+      .tip-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="20" cy="20" r="2" fill="rgba(255,255,255,0.1)"/><circle cx="80" cy="40" r="1" fill="rgba(255,255,255,0.1)"/><circle cx="40" cy="80" r="1.5" fill="rgba(255,255,255,0.1)"/></svg>');
+        pointer-events: none;
+      }
+      
+      .notification-badge {
+        position: absolute;
+        top: -5px;
+        right: -5px;
+        background: #ef4444;
+        color: white;
+        border-radius: 50%;
+        width: 20px;
+        height: 20px;
+        font-size: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+    </style>
+  </head>
+  <body>
+    <div
+      class="relative flex size-full min-h-screen flex-col bg-slate-50 justify-between group/design-root overflow-x-hidden"
+    >
+      <div>
+        <!-- Header -->
+        <div class="gradient-bg text-white p-4 pb-6">
+          <div class="flex items-center justify-between mb-4">
+            <h2 class="text-lg font-bold">Home</h2>
+            <div class="relative">
+              <button
+                class="flex items-center justify-center w-10 h-10 rounded-full bg-white bg-opacity-20 hover:bg-opacity-30 transition-all"
+                onclick="window.location.href='notifs.html'"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" fill="currentColor" viewBox="0 0 256 256">
+                  <path d="M221.8,175.94C216.25,166.38,208,139.33,208,104a80,80,0,1,0-160,0c0,35.34-8.26,62.38-13.81,71.94A16,16,0,0,0,48,200H88.81a40,40,0,0,0,78.38,0H208a16,16,0,0,0,13.8-24.06ZM128,216a24,24,0,0,1-22.62-16h45.24A24,24,0,0,1,128,216ZM48,184c7.7-13.24,16-43.92,16-80a64,64,0,1,1,128,0c0,36.05,8.28,66.73,16,80Z"></path>
+                </svg>
+                <span class="notification-badge">3</span>
+              </button>
+            </div>
+          </div>
+          
+          <div class="text-center">
+            <h3 class="text-2xl font-bold mb-2">Hello, <span id="studentName">Student</span> 👋</h3>
+            <p class="text-white text-opacity-80" id="currentDate"></p>
+          </div>
+        </div>
+
+        <!-- Quick Stats -->
+        <div class="px-4 -mt-4 mb-6">
+          <div class="grid grid-cols-2 gap-4">
+            <div class="bg-white rounded-xl p-4 shadow-lg card-hover">
+              <div class="flex items-center justify-between">
+                <div>
+                  <p class="text-sm text-gray-600">Attendance</p>
+                  <p class="text-2xl font-bold text-green-600">92%</p>
+                </div>
+                <div class="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" fill="currentColor" class="text-green-600" viewBox="0 0 256 256">
+                    <path d="M128,24A104,104,0,1,0,232,128,104.11,104.11,0,0,0,128,24Zm0,192a88,88,0,1,1,88-88A88.1,88.1,0,0,1,128,216Zm64-88a8,8,0,0,1-8,8H128a8,8,0,0,1-8-8V72a8,8,0,0,1,16,0v48h48A8,8,0,0,1,192,128Z"></path>
+                  </svg>
+                </div>
+              </div>
+            </div>
+            
+            <a href="assignments.html" class="block">
+              <div class="bg-white rounded-xl p-4 shadow-lg card-hover cursor-pointer hover:shadow-xl transition-shadow">
+                <div class="flex items-center justify-between">
+                  <div>
+                    <p class="text-sm text-gray-600">Assignments</p>
+                    <p class="text-2xl font-bold text-orange-600">3 Due</p>
+                  </div>
+                  <div class="w-10 h-10 bg-orange-100 rounded-full flex items-center justify-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" fill="currentColor" class="text-orange-600" viewBox="0 0 256 256">
+                      <path d="M213.66,82.34l-56-56A8,8,0,0,0,152,24H56A16,16,0,0,0,40,40V216a16,16,0,0,0,16,16H200a16,16,0,0,0,16-16V88A8,8,0,0,0,213.66,82.34ZM160,51.31,188.69,80H160ZM200,216H56V40h88V88a8,8,0,0,0,8,8h48V216Z"></path>
+                    </svg>
+                  </div>
+                </div>
+              </div>
+            </a>
+
+            
+          </div>
+        </div>
+
+        <!-- Today's Schedule -->
+        <div class="px-4 mb-6">
+          <h3 class="text-lg font-bold mb-3">Today's Schedule</h3>
+          <div class="bg-white rounded-xl p-4 shadow-lg">
+            <div class="space-y-3" id="todaySchedule">
+              <div class="flex items-center justify-between p-3 bg-blue-50 rounded-lg">
+                <div class="flex items-center space-x-3">
+                  <div class="w-3 h-3 bg-blue-500 rounded-full"></div>
+                  <div>
+                    <p class="font-medium">DE&NM</p>
+                    <p class="text-sm text-gray-600">10:00 - 11:00 AM</p>
+                  </div>
+                </div>
+                <span class="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded-full">Room 1106</span>
+              </div>
+              
+              <div class="flex items-center justify-between p-3 bg-green-50 rounded-lg">
+                <div class="flex items-center space-x-3">
+                  <div class="w-3 h-3 bg-green-500 rounded-full"></div>
+                  <div>
+                    <p class="font-medium">Engineering Physics</p>
+                    <p class="text-sm text-gray-600">11:00 - 12:00 PM</p>
+                  </div>
+                </div>
+                <span class="text-xs bg-green-100 text-green-800 px-2 py-1 rounded-full">Room 1106</span>
+              </div>
+
+              <div class="flex items-center justify-between p-3 bg-purple-50 rounded-lg">
+                <div class="flex items-center space-x-3">
+                  <div class="w-3 h-3 bg-pink-500 rounded-full"></div>
+                  <div>
+                    <p class="font-medium">Basic Electrical Engineering</p>
+                    <p class="text-sm text-gray-600">12:00 - 1:30 PM</p>
+                  </div>
+                </div>
+                <span class="text-xs bg-blue-100 text-gray-800 px-2 py-1 rounded-full">Room 1106</span>
+              </div>
+
+              <div class="flex items-center justify-between p-3 bg-orange-50 rounded-lg">
+                <div class="flex items-center space-x-3">
+                  <div class="w-3 h-3 bg-orange-500 rounded-full"></div>
+                  <div>
+                    <p class="font-medium">Scientific Programming Lab</p>
+                    <p class="text-sm text-gray-600">1:30 - 4:00 PM</p>
+                  </div>
+                </div>
+                <span class="text-xs bg-blue-100 text-gray-800 px-2 py-1 rounded-full">Room 1104</span>
+              </div>
+          
+
+            </div>
+          </div>
+        </div> 
+
+        <!-- Quick Actions -->
+        <div class="px-4 mb-6">
+          <h3 class="text-lg font-bold mb-3">Quick Actions</h3>
+          <div class="grid grid-cols-2 gap-3">
+            <!-- <a href="faq.html" class="flex flex-col items-center p-4 bg-white rounded-xl shadow-lg card-hover text-center">
+              <div class="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center mb-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" fill="currentColor" class="text-purple-600" viewBox="0 0 256 256">
+                  <path d="M140,180a12,12,0,1,1-12-12A12,12,0,0,1,140,180ZM128,72c-22.06,0-40,16.15-40,36v4a8,8,0,0,0,16,0v-4c0-11,10.77-20,24-20s24,9,24,20-10.77,20-24,20a8,8,0,0,0-8,8v8a8,8,0,0,0,16,0v-.72c18.24-3.35,32-17.9,32-35.28C168,88.15,150.06,72,128,72Zm104,56A104,104,0,1,1,128,24,104.11,104.11,0,0,1,232,128Zm-16,0a88,88,0,1,0-88,88A88.1,88.1,0,0,0,216,128Z"></path>
+                </svg>
+              </div>
+              <h4 class="font-semibold text-sm">FAQ</h4>
+            </a> -->
+
+            <a href="http://localhost:5173" target="_blank" class="flex flex-col items-center p-4 bg-white rounded-xl shadow-lg card-hover text-center">
+              <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mb-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" fill="currentColor" class="text-blue-600" viewBox="0 0 256 256">
+                  <path d="M213.66,82.34l-56-56A8,8,0,0,0,152,24H56A16,16,0,0,0,40,40V216a16,16,0,0,0,16,16H200a16,16,0,0,0,16-16V88A8,8,0,0,0,213.66,82.34ZM160,51.31,188.69,80H160ZM200,216H56V40h88V88a8,8,0,0,0,8,8h48V216Z"></path>
+                </svg>
+              </div>
+              <h4 class="font-semibold text-sm">Leave Request</h4>
+            </a>
+
+            <a href="teachers.html" class="flex flex-col items-center p-4 bg-white rounded-xl shadow-lg card-hover text-center">
+              <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mb-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" fill="currentColor" class="text-green-600" viewBox="0 0 256 256">
+                  <path d="M208,32H184V24a8,8,0,0,0-16,0v8H88V24a8,8,0,0,0-16,0v8H48A16,16,0,0,0,32,48V208a16,16,0,0,0,16,16H208a16,16,0,0,0,16-16V48A16,16,0,0,0,208,32ZM72,48v8a8,8,0,0,0,16,0V48h80v8a8,8,0,0,0,16,0V48h24V80H48V48ZM208,208H48V96H208V208Z"></path>
+                </svg>
+              </div>
+              <h4 class="font-semibold text-sm">Faculty Timetable</h4>
+            </a>
+
+            <a href="pyqs.html" class="flex flex-col items-center p-4 bg-white rounded-xl shadow-lg card-hover text-center">
+              <div class="w-12 h-12 bg-orange-100 rounded-full flex items-center justify-center mb-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" fill="currentColor" class="text-orange-600" viewBox="0 0 256 256">
+                  <path d="M213.66,82.34l-56-56A8,8,0,0,0,152,24H56A16,16,0,0,0,40,40V216a16,16,0,0,0,16,16H200a16,16,0,0,0,16-16V88A8,8,0,0,0,213.66,82.34ZM160,51.31,188.69,80H160ZM200,216H56V40h88V88a8,8,0,0,0,8,8h48V216Z"></path>
+                </svg>
+              </div>
+              <h4 class="font-semibold text-sm">Previous Papers</h4>
+            </a>
+
+            <a href="faq.html" class="flex flex-col items-center p-4 bg-white rounded-xl shadow-lg card-hover text-center">
+              <div class="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center mb-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" fill="currentColor" class="text-purple-600" viewBox="0 0 256 256">
+                  <path d="M140,180a12,12,0,1,1-12-12A12,12,0,0,1,140,180ZM128,72c-22.06,0-40,16.15-40,36v4a8,8,0,0,0,16,0v-4c0-11,10.77-20,24-20s24,9,24,20-10.77,20-24,20a8,8,0,0,0-8,8v8a8,8,0,0,0,16,0v-.72c18.24-3.35,32-17.9,32-35.28C168,88.15,150.06,72,128,72Zm104,56A104,104,0,1,1,128,24,104.11,104.11,0,0,1,232,128Zm-16,0a88,88,0,1,0-88,88A88.1,88.1,0,0,0,216,128Z"></path>
+                </svg>
+              </div>
+              <h4 class="font-semibold text-sm">FAQ</h4>
+            </a>
+          </div>
+        </div>
+
+        
+
+        <!-- Academic Resources -->
+        <div class="px-4 mb-6">
+          <h3 class="text-lg font-bold mb-3">Academic Resources</h3>
+          <div class="grid grid-cols-2 gap-3">
+            <a href="attendance.html" class="flex flex-col items-center p-4 bg-white rounded-xl shadow-lg card-hover text-center">
+              <div class="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center mb-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" fill="currentColor" class="text-red-600" viewBox="0 0 256 256">
+                  <path d="M128,24A104,104,0,1,0,232,128,104.11,104.11,0,0,0,128,24Zm0,192a88,88,0,1,1,88-88A88.1,88.1,0,0,1,128,216Zm64-88a8,8,0,0,1-8,8H128a8,8,0,0,1-8-8V72a8,8,0,0,1,16,0v48h48A8,8,0,0,1,192,128Z"></path>
+                </svg>
+              </div>
+              <h4 class="font-semibold text-sm">Attendance</h4>
+            </a>
+
+            <a href="exam_tracker.html" class="flex flex-col items-center p-4 bg-white rounded-xl shadow-lg card-hover text-center">
+              <div class="w-12 h-12 bg-indigo-100 rounded-full flex items-center justify-center mb-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" fill="currentColor" class="text-indigo-600" viewBox="0 0 256 256">
+                  <path d="M213.66,82.34l-56-56A8,8,0,0,0,152,24H56A16,16,0,0,0,40,40V216a16,16,0,0,0,16,16H200a16,16,0,0,0,16-16V88A8,8,0,0,0,213.66,82.34ZM160,51.31,188.69,80H160ZM200,216H56V40h88V88a8,8,0,0,0,8,8h48V216Z"></path>
+                </svg>
+              </div>
+              <h4 class="font-semibold text-sm">Exam Tracker</h4>
+            </a>
+
+            <a href="assignments.html" class="flex flex-col items-center p-4 bg-white rounded-xl shadow-lg card-hover text-center">
+              <div class="w-12 h-12 bg-yellow-100 rounded-full flex items-center justify-center mb-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" fill="currentColor" class="text-yellow-600" viewBox="0 0 256 256">
+                  <path d="M213.66,82.34l-56-56A8,8,0,0,0,152,24H56A16,16,0,0,0,40,40V216a16,16,0,0,0,16,16H200a16,16,0,0,0,16-16V88A8,8,0,0,0,213.66,82.34ZM160,51.31,188.69,80H160ZM200,216H56V40h88V88a8,8,0,0,0,8,8h48V216Z"></path>
+                </svg>
+              </div>
+              <h4 class="font-semibold text-sm">Assignments</h4>
+            </a>
+
+            <a href="almanac.html" class="flex flex-col items-center p-4 bg-white rounded-xl shadow-lg card-hover text-center">
+              <div class="w-12 h-12 bg-teal-100 rounded-full flex items-center justify-center mb-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" fill="currentColor" class="text-teal-600" viewBox="0 0 256 256">
+                  <path d="M208,32H184V24a8,8,0,0,0-16,0v8H88V24a8,8,0,0,0-16,0v8H48A16,16,0,0,0,32,48V208a16,16,0,0,0,16,16H208a16,16,0,0,0,16-16V48A16,16,0,0,0,208,32ZM72,48v8a8,8,0,0,0,16,0V48h80v8a8,8,0,0,0,16,0V48h24V80H48V48ZM208,208H48V96H208V208Z"></path>
+                </svg>
+              </div>
+              <h4 class="font-semibold text-sm">Almanac</h4>
+            </a>
+          </div>
+        </div>
+
+        <!-- AI Tip of the Day -->
+        <div class="px-4 mb-6">
+          <h3 class="text-lg font-bold mb-3">💡 AI Tip of the Day</h3>
+          <div class="tip-card">
+            <div class="relative z-10">
+              <p class="text-lg font-medium mb-3" id="dailyTip">
+                Stay focused during study sessions by setting specific goals and taking short breaks every 25 minutes.
+              </p>
+              <button
+                onclick="getNewTip()"
+                class="bg-white bg-opacity-20 hover:bg-opacity-30 text-white px-4 py-2 rounded-full text-sm font-medium transition-all"
+              >
+                Get Another Tip
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bottom Navigation -->
+        <div class="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 px-4 py-2">
+          <div class="flex justify-around">
+            <a href="dashboard.html" class="flex flex-col items-center py-2 text-blue-600">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" fill="currentColor" viewBox="0 0 256 256">
+                <path d="M224,115.55V208a16,16,0,0,1-16,16H168a16,16,0,0,1-16-16V168a8,8,0,0,0-8-8H112a8,8,0,0,0-8,8v40a16,16,0,0,1-16,16H48a16,16,0,0,1-16-16V115.55a16,16,0,0,1,5.17-11.78l80-75.48.11-.11a16,16,0,0,1,21.53,0,1.14,1.14,0,0,0,.11.11l80,75.48A16,16,0,0,1,224,115.55Z"></path>
+              </svg>
+              <span class="text-xs mt-1">Home</span>
+            </a>
+            
+            <a href="calendar.html" class="flex flex-col items-center py-2 text-gray-400">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" fill="currentColor" viewBox="0 0 256 256">
+                <path d="M208,32H184V24a8,8,0,0,0-16,0v8H88V24a8,8,0,0,0-16,0v8H48A16,16,0,0,0,32,48V208a16,16,0,0,0,16,16H208a16,16,0,0,0,16-16V48A16,16,0,0,0,208,32ZM72,48v8a8,8,0,0,0,16,0V48h80v8a8,8,0,0,0,16,0V48h24V80H48V48ZM208,208H48V96H208V208Z"></path>
+              </svg>
+              <span class="text-xs mt-1">Calendar</span>
+            </a>
+            
+            <!-- <a href="notes.html" class="flex flex-col items-center py-2 text-gray-400">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" fill="currentColor" viewBox="0 0 256 256">
+                <path d="M88,96a8,8,0,0,1,8-8h64a8,8,0,0,1,0,16H96A8,8,0,0,1,88,96Zm8,40h64a8,8,0,0,0,0-16H96a8,8,0,0,0,0,16Zm32,16H96a8,8,0,0,0,0,16h32a8,8,0,0,0,0-16ZM224,48V156.69A15.86,15.86,0,0,1,219.31,168L168,219.31A15.86,15.86,0,0,1,156.69,224H48a16,16,0,0,1-16-16V48A16,16,0,0,1,48,32H208A16,16,0,0,1,224,48Z"></path>
+              </svg>
+              <span class="text-xs mt-1">Notes</span>
+            </a>
+             -->
+            <a href="profile.html" class="flex flex-col items-center py-2 text-gray-400">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" fill="currentColor" viewBox="0 0 256 256">
+                <path d="M230.92,212c-15.23-26.33-38.7-45.21-66.09-54.16a72,72,0,1,0-73.66,0C63.78,166.78,40.31,185.66,25.08,212a8,8,0,1,0,13.85,8c18.84-32.56,52.14-52,89.07-52s70.23,19.44,89.07,52a8,8,0,1,0,13.85-8ZM72,96a56,56,0,1,1,56,56A56.06,56.06,0,0,1,72,96Z"></path>
+              </svg>
+              <span class="text-xs mt-1">Profile</span>
+            </a>
+          </div>
+        </div>
+        
+        <div class="h-20"></div> <!-- Spacer for bottom navigation -->
+      </div>
+    </div>
+
+    <script>
+      // Set current date
+      const now = new Date();
+      const options = { 
+        weekday: 'long', 
+        year: 'numeric', 
+        month: 'long', 
+        day: 'numeric' 
+      };
+      document.getElementById('currentDate').textContent = now.toLocaleDateString('en-US', options);
+
+      // Load student name
+      document.addEventListener("DOMContentLoaded", () => {
+        const studentName = localStorage.getItem("studentName");
+        if (studentName) {
+          document.getElementById("studentName").textContent = studentName;
+        } else {
+          alert("Please login first.");
+          window.location.href = "index.html";
+        }
+      });
+
+      // AI Tips array
+      const aiTips = [
+        "Stay focused during study sessions by setting specific goals and taking short breaks every 25 minutes.",
+        "Use the Pomodoro Technique: 25 minutes of focused work followed by a 5-minute break.",
+        "Create a dedicated study space free from distractions to improve concentration.",
+        "Review your notes within 24 hours of taking them to improve retention by 60%.",
+        "Use active recall by testing yourself instead of just re-reading notes.",
+        "Get 7-9 hours of sleep for optimal memory consolidation and learning.",
+        "Exercise regularly to boost brain function and reduce stress levels.",
+        "Use spaced repetition to review material at increasing intervals.",
+        "Break large tasks into smaller, manageable chunks to avoid overwhelm.",
+        "Stay hydrated and eat brain-healthy foods like nuts, berries, and fish."
+      ];
+
+      function getNewTip() {
+        const tipElement = document.getElementById('dailyTip');
+        const randomTip = aiTips[Math.floor(Math.random() * aiTips.length)];
+        
+        // Add fade effect
+        tipElement.style.opacity = '0.5';
+        setTimeout(() => {
+          tipElement.textContent = randomTip;
+          tipElement.style.opacity = '1';
+        }, 200);
+      }
+    </script>
+    <script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const pendingCount = localStorage.getItem("pendingAssignmentsCount") || 0;
+    const assignmentsText = document.querySelector('.text-2xl.font-bold.text-orange-600');
+    if (assignmentsText) {
+      assignmentsText.textContent = `${pendingCount} Due`;
+    }
+  });
+</script>
+  </body>
+</html>

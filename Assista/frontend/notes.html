@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Faculty Timetable</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin />
+    <link
+      rel="stylesheet"
+      as="style"
+      onload="this.rel='stylesheet'"
+      href="https://fonts.googleapis.com/css2?display=swap&family=Inter:wght@400;500;700;900&family=Noto+Sans:wght@400;500;700;900"
+    />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <style>
+      body {
+        font-family: Inter, "Noto Sans", sans-serif;
+      }
+      .tab-btn {
+        padding: 0.25rem 0.75rem;
+        font-weight: 700;
+        font-size: 0.875rem;
+        border-bottom: 4px solid transparent;
+        color: #5c738a;
+      }
+
+      .tab-btn.active {
+        border-bottom-color: #3f7fbf;
+        color: #101418;
+      }
+    </style>
+  </head>
+  <body class="bg-gray-50 min-h-screen w-full flex flex-col items-center">
+    <div class="w-full max-w-4xl px-4">
+      <div class="flex items-center py-4 justify-between">
+        <div class="text-[#101418] flex items-center">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" fill="currentColor" viewBox="0 0 256 256">
+            <path d="M224,128a8,8,0,0,1-8,8H59.31l58.35,58.34a8,8,0,0,1-11.32,11.32l-72-72a8,8,0,0,1,0-11.32l72-72a8,8,0,0,1,11.32,11.32L59.31,120H216A8,8,0,0,1,224,128Z"></path>
+          </svg>
+        </div>
+        <h2 class="text-[#101418] text-2xl font-bold text-center flex-1">Faculty Timetable</h2>
+      </div>
+
+      <!-- Teacher and Date/Time Slot Selection -->
+      <div class="flex flex-wrap gap-4 justify-center mb-4">
+        <select id="teacherSelect" class="form-input w-72 rounded-xl bg-[#eaedf1] h-14 text-[#101418] p-4 text-base">
+          <option disabled selected>Search By Teacher's Name</option>
+        </select>
+      </div>
+
+      <!-- Date and Time Slot Selection -->
+      <div class="flex flex-wrap gap-4 justify-center mb-4">
+        <input type="date" id="dateSelect" class="form-input w-72 rounded-xl bg-[#eaedf1] h-14 text-[#101418] p-4 text-base" />
+        <select id="timeSelect" class="form-input w-72 rounded-xl bg-[#eaedf1] h-14 text-[#101418] p-4 text-base">
+          <option disabled selected>Select Time Slot</option>
+          <option value="0">10:00 - 11:00 AM</option>
+          <option value="1">11:00 - 12:00 PM</option>
+          <option value="2">12:00 - 12:50 PM</option>
+          <option value="3">1:30 - 2:20 PM</option>
+          <option value="4">2:20 - 3:10 PM</option>
+          <option value="5">3:10 - 4:00 PM</option>
+        </select>
+      </div>
+
+      <div id="timetable" class="space-y-6"></div>
+    </div>
+
+    <script>
+      const timeSlots = [
+        "10:00 - 11:00 AM",
+        "11:00 - 12:00 PM",
+        "12:00 - 12:50 PM",
+        "1:30 - 2:20 PM",
+        "2:20 - 3:10 PM",
+        "3:10 - 4:00 PM"
+      ];
+
+      const teacherSelect = document.getElementById("teacherSelect");
+      const dateSelect = document.getElementById("dateSelect");
+      const timeSelect = document.getElementById("timeSelect");
+      const timetableContainer = document.getElementById("timetable");
+      const tabButtons = document.querySelectorAll(".tab-btn");
+
+      const teachers = [
+        {
+          name: "Mrs. Sudha",
+          subject: "Basic Electrical Engineering (BEE)",
+          dept: "CSE",
+          timetable: {
+            Monday: ["No class", "CSE-E - BEE", "No class", "No class", "CSE-C - BEE"],
+            Tuesday: ["No class", "CSE-E - BEE", "No class", "No class", "No class", "No class"],
+            Wednesday: ["No class", "No class", "No class", "CSE-E - BEE", "No class", "No class"],
+            Thursday: ["No class", "No class", "CSE-C- BEE", "No class", "CSE-E - BEE", "No class"],
+            Friday: ["CSE-C - BEE", "No class", "CSE-E - BEE", "No class", "No class", "No class"],
+            Saturday: ["No class", "No class", "No class", "CSE-C - BEE", "No class", "No class"]
+          },
+          room: "1108"
+        },
+        {
+          name: "Mrs. Rekha Rani",
+          subject: "Engineering Physics(EP)",
+          dept: "CSE",
+          timetable: {
+            Monday: ["CSE-C - EP", "CSE-D - EP", "CSE-E - EP", "CSE-D - EP Lab", "CSE-D - EP Lab", "CSE-D - EP Lab"],
+            Tuesday: ["CSE-E - EP", "No class", "CSE-C - EP", "CSE-C - EP Lab", "CSE-C - EP Lab", "CSE-C - EP Lab"],
+            Wednesday: ["CSE-E - EP Lab", "CSE-E - EP Lab", "CSE-E - EP Lab", "CSE-C - EP", "No class", "CSE-E - EP"],
+            Thursday: ["CSE-D - EP Lab", "CSE-D - EP Lab", "CSE-D - EP Lab", "No class", "CSE-D - EP", "No class"],
+            Friday: ["CSE-E - EP", "CSE-D - EP", "CSE-C - EP", "CSE-E - EP Lab", "CSE-E - EP Lab", "CSE-E - EP Lab"],
+            Saturday: ["CSE-C - EP Lab", "CSE-C - EP Lab", "CSE-C - EP Lab", "CSE-E - EP", "CSE-C - EP", "CSE-D - EP"]
+          },
+          room: "1108"
+        }
+      ];
+
+      // Populate teacher select dropdown
+      teachers.forEach(({ name }) => {
+        const opt = new Option(name, name);
+        teacherSelect.appendChild(opt);
+      });
+
+      teacherSelect.addEventListener("change", checkTeacherAvailability);
+      dateSelect.addEventListener("change", checkTeacherAvailability);
+      timeSelect.addEventListener("change", checkTeacherAvailability);
+
+      function checkTeacherAvailability() {
+        const selectedDate = dateSelect.value;  // The date selected by the user
+        const selectedTimeSlot = timeSelect.value; // The time slot selected by the user
+
+        if (!selectedDate || !selectedTimeSlot) {
+          return; // If no date or time is selected, do nothing
+        }
+
+        // Get the selected day based on the date
+        const selectedDay = new Date(selectedDate).toLocaleString('en-us', { weekday: 'long' });
+
+        // Get the list of teachers available at the selected time slot
+        const availableTeachers = teachers.filter(teacher => {
+          return teacher.timetable[selectedDay][selectedTimeSlot] === "No class";
+        });
+
+        // Display available teachers
+        displayAvailableTeachers(availableTeachers);
+      }
+
+      function displayAvailableTeachers(availableTeachers) {
+        timetableContainer.innerHTML = ""; // Clear the timetable container
+
+        if (availableTeachers.length === 0) {
+          timetableContainer.innerHTML = "<p class='text-center text-[#5c738a] py-4'>No teachers are free at this time.</p>";
+          return;
+        }
+
+        availableTeachers.forEach(teacher => {
+          const teacherDiv = document.createElement("div");
+          teacherDiv.className = "bg-[#eaedf1] p-4 rounded-lg shadow-sm mb-4";
+          teacherDiv.innerHTML = `
+            <h3 class="text-[#101418] font-semibold">${teacher.name}</h3>
+            <p class="text-[#5c738a] text-sm">${teacher.subject} - ${teacher.dept}</p>
+            <p class="text-[#5c738a] text-sm">Room: ${teacher.room}</p>
+          `;
+          timetableContainer.appendChild(teacherDiv);
+        });
+      }
+    </script>
+  </body>
+</html>

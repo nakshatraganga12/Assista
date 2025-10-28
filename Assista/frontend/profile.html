@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin />
+    <link
+      rel="stylesheet"
+      as="style"
+      onload="this.rel='stylesheet'"
+      href="https://fonts.googleapis.com/css2?display=swap&family=Lexend:wght@400;500;700;900&family=Noto+Sans:wght@400;500;700;900"
+    />
+    <title>Profile</title>
+    <link rel="icon" type="image/x-icon" href="data:image/x-icon;base64," />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  </head>
+
+  <body>
+    <div
+      class="relative flex size-full min-h-screen flex-col bg-slate-50 justify-between group/design-root overflow-x-hidden"
+      style='font-family: Lexend, "Noto Sans", sans-serif;'
+    >
+      <div>
+        <!-- Top Bar -->
+        <div class="flex items-center bg-slate-50 p-4 pb-2 justify-between">
+          <div class="text-[#0e141b] flex size-12 shrink-0 items-center">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" fill="currentColor" viewBox="0 0 256 256">
+              <path d="M224,128a8,8,0,0,1-8,8H59.31l58.35,58.34a8,8,0,0,1-11.32,11.32l-72-72a8,8,0,0,1,0-11.32l72-72a8,8,0,0,1,11.32,11.32L59.31,120H216A8,8,0,0,1,224,128Z"></path>
+            </svg>
+          </div>
+          <h2 class="text-[#0e141b] text-lg font-bold leading-tight tracking-[-0.015em] flex-1 text-center pr-12">Profile</h2>
+        </div>
+
+        <!-- Profile Info -->
+        <div class="flex p-4 @container">
+          <div class="flex w-full flex-col gap-4 items-center">
+            <div class="flex gap-4 flex-col items-center">
+              <div
+                id="initialsAvatar"
+                class="bg-[#cbd5e1] text-[#0e141b] flex items-center justify-center aspect-square rounded-full min-h-32 w-32 text-4xl font-bold"
+              >
+                EC
+              </div>
+              <div class="flex flex-col items-center justify-center">
+                <p class="text-[#0e141b] text-[22px] font-bold leading-tight tracking-[-0.015em] text-center" id="studentName">Ethan Carter</p>
+                <p class="text-[#4e7097] text-base font-normal leading-normal text-center" id="studentID">Student ID: 123456789</p>
+                <p class="text-[#4e7097] text-base font-normal leading-normal text-center" id="studentRole">Computer Science</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Account Section -->
+        <h3 class="text-[#0e141b] text-lg font-bold leading-tight tracking-[-0.015em] px-4 pb-2 pt-4">Account</h3>
+        <a href="update-profile.html" class="flex items-center gap-4 bg-slate-50 px-4 min-h-14 justify-between">
+          <p class="text-[#0e141b] text-base font-normal leading-normal flex-1 truncate">Update Profile</p>
+          <div class="shrink-0">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" fill="currentColor" viewBox="0 0 256 256">
+              <path d="M221.66,133.66l-72,72a8,8,0,0,1-11.32-11.32L196.69,136H40a8,8,0,0,1,0-16H196.69L138.34,61.66a8,8,0,0,1,11.32-11.32l72,72A8,8,0,0,1,221.66,133.66Z"></path>
+            </svg>
+          </div>
+        </a>
+
+        <a href="settings.html" class="flex items-center gap-4 bg-slate-50 px-4 min-h-14 justify-between">
+          <p class="text-[#0e141b] text-base font-normal leading-normal flex-1 truncate">Settings</p>
+          <div class="shrink-0">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" fill="currentColor" viewBox="0 0 256 256">
+              <path d="M221.66,133.66l-72,72a8,8,0,0,1-11.32-11.32L196.69,136H40a8,8,0,0,1,0-16H196.69L138.34,61.66a8,8,0,0,1,11.32-11.32l72,72A8,8,0,0,1,221.66,133.66Z"></path>
+            </svg>
+          </div>
+        </a>
+
+        <a href="notifs.html" class="flex items-center gap-4 bg-slate-50 px-4 min-h-14 justify-between">
+          <p class="text-[#0e141b] text-base font-normal leading-normal flex-1 truncate">Notifications</p>
+          <div class="shrink-0">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" fill="currentColor" viewBox="0 0 256 256">
+              <path d="M221.66,133.66l-72,72a8,8,0,0,1-11.32-11.32L196.69,136H40a8,8,0,0,1,0-16H196.69L138.34,61.66a8,8,0,0,1,11.32-11.32l72,72A8,8,0,0,1,221.66,133.66Z"></path>
+            </svg>
+          </div>
+        </a>
+
+        <!-- Support Section -->
+        <h3 class="text-[#0e141b] text-lg font-bold leading-tight tracking-[-0.015em] px-4 pb-2 pt-4">Support</h3>
+        <button id="helpBtn" class="flex items-center gap-4 bg-slate-50 px-4 min-h-14 justify-between w-full text-left">
+          <p class="text-[#0e141b] text-base font-normal leading-normal flex-1 truncate">Help Center</p>
+          <div class="shrink-0">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" fill="currentColor" viewBox="0 0 256 256">
+              <path d="M221.66,133.66l-72,72a8,8,0,0,1-11.32-11.32L196.69,136H40a8,8,0,0,1,0-16H196.69L138.34,61.66a8,8,0,0,1,11.32-11.32l72,72A8,8,0,0,1,221.66,133.66Z"></path>
+            </svg>
+          </div>
+        </button>
+
+        <a href="contact-us.html" class="flex items-center gap-4 bg-slate-50 px-4 min-h-14 justify-between">
+          <p class="text-[#0e141b] text-base font-normal leading-normal flex-1 truncate">Contact Us</p>
+          <div class="shrink-0">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" fill="currentColor" viewBox="0 0 256 256">
+              <path d="M221.66,133.66l-72,72a8,8,0,0,1-11.32-11.32L196.69,136H40a8,8,0,0,1,0-16H196.69L138.34,61.66a8,8,0,0,1,11.32-11.32l72,72A8,8,0,0,1,221.66,133.66Z"></path>
+            </svg>
+          </div>
+        </a>
+
+       <!-- Legal Section -->
+<h3 class="text-[#0e141b] text-lg font-bold leading-tight tracking-[-0.015em] px-4 pb-2 pt-4">Legal</h3>
+
+<button id="termsBtn" class="flex items-center justify-between gap-4 bg-slate-50 px-4 min-h-14 w-full text-left">
+  <p class="text-[#0e141b] text-base font-normal leading-normal truncate">Terms of Service</p>
+  <div class="shrink-0">
+    <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" fill="currentColor" viewBox="0 0 256 256">
+      <path d="M221.66,133.66l-72,72a8,8,0,0,1-11.32-11.32L196.69,136H40a8,8,0,0,1,0-16H196.69L138.34,61.66a8,8,0,0,1,11.32-11.32l72,72A8,8,0,0,1,221.66,133.66Z"></path>
+    </svg>
+  </div>
+</button>
+
+<button id="privacyBtn" class="flex items-center justify-between gap-4 bg-slate-50 px-4 min-h-14 w-full text-left">
+  <p class="text-[#0e141b] text-base font-normal leading-normal truncate">Privacy Policy</p>
+  <div class="shrink-0">
+    <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" fill="currentColor" viewBox="0 0 256 256">
+      <path d="M221.66,133.66l-72,72a8,8,0,0,1-11.32-11.32L196.69,136H40a8,8,0,0,1,0-16H196.69L138.34,61.66a8,8,0,0,1,11.32-11.32l72,72A8,8,0,0,1,221.66,133.66Z"></path>
+    </svg>
+  </div>
+</button>
+
+
+
+      <!-- Logout -->
+      <div>
+        <button
+          id="logoutBtn"
+          role="button"
+          class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-full h-10 px-4 flex-1 bg-[#e7edf3] text-[#0e141b] text-sm font-bold"
+        >
+          <span class="truncate">Log Out</span>
+        </button>
+        <div class="h-5 bg-slate-50"></div>
+      </div>
+    </div>
+
+    
+    <!-- Terms Modal -->
+    <div id="termsModal" class="fixed inset-0 bg-black/50 z-50 hidden items-center justify-center">
+      <div class="bg-white w-[90%] max-w-xl rounded-xl shadow-lg p-6 relative">
+        <h2 class="text-xl font-bold mb-4">Terms & Conditions</h2>
+        <div class="text-sm text-gray-700 max-h-[300px] overflow-y-auto space-y-2">
+          <p><strong>1. Acceptance of Terms:</strong> By using Assista, you agree to these terms. If you do not agree, do not use the app.</p>
+          <p><strong>2. Use of the App:</strong> You must be a student or staff member of [Your College Name] with authorized login credentials. Do not share your login details.</p>
+          <p><strong>3. User Responsibilities:</strong> You are responsible for the accuracy of the information you input and the security of your login credentials.</p>
+          <p><strong>4. Privacy:</strong> We value your privacy. Refer to the Privacy Policy for how we handle your data.</p>
+          <p><strong>5. Prohibited Conduct:</strong> No spamming, harassment, or misuse of any features. Do not try to reverse-engineer, hack, or interfere with the platform.</p>
+          <p><strong>6. Modifications:</strong> We may change these terms anytime. Continued use means you accept the new terms.</p>
+          <p><strong>7. Termination:</strong> Violation of terms may result in suspension or permanent ban from the app.</p>
+          <p><strong>8. Limitation of Liability:</strong> We are not liable for any damages resulting from the use or inability to use the app.</p>
+          <p><strong>9. Governing Law:</strong> These terms are governed by the laws of India.</p>
+        </div>
+        <button id="closeTermsModal" class="absolute top-2 right-3 text-gray-500 hover:text-black text-lg font-bold">&times;</button>
+      </div>
+    </div>
+
+    <!-- Privacy Policy Modal -->
+    <div id="privacyModal" class="fixed inset-0 bg-black/50 z-50 hidden items-center justify-center">
+      <div class="bg-white w-[90%] max-w-xl rounded-xl shadow-lg p-6 relative ml-4">
+        <h2 class="text-xl font-bold mb-4">Privacy Policy</h2>
+        <div class="text-sm text-gray-700 max-h-[300px] overflow-y-auto space-y-2">
+          <p><strong>Last Updated:</strong> June 11, 2025</p>
+          <p><strong>What We Collect:</strong> We collect your name, roll number, and login info. We also track app usage, device data, and interactions to improve our services.</p>
+          <p><strong>How We Use It:</strong> To provide features, send notifications, improve your experience, and ensure your account is secure.</p>
+          <p><strong>What We Don't Do:</strong> We never sell or rent your data. We only share it with trusted service providers or when required by law.</p>
+          <p><strong>Your Rights:</strong> You can ask us to access, update, or delete your data anytime.</p>
+          <p><strong>Children's Privacy:</strong> Users must be 13 years or older to use Assista.</p>
+          <p><strong>Security:</strong> We use secure systems to protect your data, but no system is 100% hack-proof.</p>
+          <p><strong>Updates:</strong> If this policy changes, we'll notify you in the app. Continued use means you accept the changes.</p>
+          <p><strong>Contact Us:</strong>  +91 945XXXXX89 | support@assista.com</p>
+        </div>
+        <button id="closePrivacyModal" class="absolute top-2 right-3 text-gray-500 hover:text-black text-lg font-bold">&times;</button>
+      </div>
+    </div>
+    
+    <!-- Help Centre Modal -->
+<div id="helpModal" class="fixed inset-0 bg-black/50 z-50 hidden items-center justify-center">
+  <div class="bg-white w-[90%] max-w-xl rounded-xl shadow-lg p-6 relative">
+    <h2 class="text-xl font-bold mb-4">Help Centre</h2>
+
+    <!-- Search Bar -->
+    <input
+      type="text"
+      placeholder="Search help topics..."
+      class="w-full px-4 py-2 mb-4 border rounded-md text-sm"
+    />
+
+    <!-- FAQs -->
+    <div class="text-sm text-gray-700 max-h-[300px] overflow-y-auto space-y-3">
+      <h3 class="font-semibold text-base text-[#0e141b]">FAQs</h3>
+      <p><strong>How to reset password?</strong><br>You can reset your password from the login screen by clicking on "Forgot Password".</p>
+      <p><strong>How to update profile details?</strong><br>Go to your profile settings and click on "Edit Profile" to update your information.</p>
+      <p><strong>How to track attendance or assignments?</strong><br>Navigate to the "Attendance" or "Assignments" tab in your dashboard to see updates.</p>
+      <p><strong>How to report a bug?</strong><br>Click the "Report a Bug" option in settings or use the contact form to notify our team.</p>
+
+      <!-- Categories -->
+      <h3 class="font-semibold text-base text-[#0e141b] mt-4">Categories</h3>
+      <ul class="list-disc list-inside space-y-1">
+        <li><strong>Account & Login Issues</strong>: Password reset, login failures, account lockouts.</li>
+        <li><strong>Academic Features</strong>: Timetable, syllabus, notes, reminders, exam tracker.</li>
+        <li><strong>Notifications & Permissions</strong>: Push alerts, reminders, app permissions.</li>
+        <li><strong>App Settings & Customizations</strong>: Theme, privacy controls, app language.</li>
+      </ul>
+
+      <!-- Contact Shortcut -->
+      <h3 class="font-semibold text-base text-[#0e141b] mt-4">Still need help?</h3>
+      <p>Contact our team directly: <a href="contact.html" class="text-blue-600 underline">Go to Contact Us</a></p>
+    </div>
+
+    <button id="closeHelpModal" class="absolute top-2 right-3 text-gray-500 hover:text-black text-lg font-bold">&times;</button>
+  </div>
+</div>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        // Load user data
+        const studentName = localStorage.getItem("studentName");
+        const rollNo = localStorage.getItem("rollNo");
+        const studentRole = localStorage.getItem("studentRole");
+
+        if (studentName) {
+          document.getElementById("studentName").textContent = studentName;
+          document.getElementById("initialsAvatar").textContent = studentName
+            .split(" ")
+            .map(n => n[0])
+            .join("")
+            .toUpperCase();
+        }
+
+        if (rollNo) {
+          document.getElementById("studentID").textContent = "Student ID: " + rollNo;
+        }
+
+        if (studentRole) {
+          document.getElementById("studentRole").textContent = studentRole;
+        }
+
+        // Modal logic
+        const termsModal = document.getElementById("termsModal");
+        const privacyModal = document.getElementById("privacyModal");
+        const helpModal = document.getElementById("helpModal");
+
+        document.getElementById("termsBtn").addEventListener("click", () => {
+          termsModal.classList.remove("hidden");
+          termsModal.classList.add("flex");
+        });
+
+        document.getElementById("privacyBtn").addEventListener("click", () => {
+          privacyModal.classList.remove("hidden");
+          privacyModal.classList.add("flex");
+        });
+
+        document.getElementById("helpBtn").addEventListener("click", () => {
+          helpModal.classList.remove("hidden");
+          helpModal.classList.add("flex");
+        });
+
+        document.getElementById("closeTermsModal").addEventListener("click", () => termsModal.classList.add("hidden"));
+        document.getElementById("closePrivacyModal").addEventListener("click", () => privacyModal.classList.add("hidden"));
+        document.getElementById("closeHelpModal").addEventListener("click", () => helpModal.classList.add("hidden"));
+
+        window.addEventListener("click", e => {
+          if (e.target === termsModal) termsModal.classList.add("hidden");
+          if (e.target === privacyModal) privacyModal.classList.add("hidden");
+          if (e.target === helpModal) helpModal.classList.add("hidden");
+        });
+
+        // Logout
+        document.getElementById("logoutBtn").addEventListener("click", function () {
+          localStorage.clear();
+          window.location.href = "index.html";
+        });
+      });
+    </script>
+  </body>
+</html>

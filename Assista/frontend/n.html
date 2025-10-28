@@ -1,0 +1,781 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Faculty Timetable</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin />
+    <link
+      rel="stylesheet"
+      as="style"
+      onload="this.rel='stylesheet'"
+      href="https://fonts.googleapis.com/css2?display=swap&family=Inter:wght@400;500;700;900&family=Noto+Sans:wght@400;500;700;900"
+    />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <style>
+      body {
+        font-family: Inter, "Noto Sans", sans-serif;
+      }
+      .tab-btn {
+        padding: 0.25rem 0.75rem;
+        font-weight: 700;
+        font-size: 0.875rem;
+        border-bottom: 4px solid transparent;
+        color: #5c738a;
+      }
+      .tab-btn.active {
+        border-bottom-color: #3f7fbf;
+        color: #101418;
+      }
+      .time-slot-btn {
+        transition: all 0.2s ease;
+      }
+      .time-slot-btn:hover {
+        transform: translateY(-2px);
+      }
+      .time-slot-btn.active {
+        background-color: #3f7fbf;
+        color: white;
+      }
+      .teacher-card {
+        transition: all 0.2s ease;
+      }
+      .teacher-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      }
+      .toggle-container {
+        display: flex;
+        margin: 1rem 0;
+        border-radius: 0.5rem;
+        overflow: hidden;
+        border: 1px solid #e2e8f0;
+      }
+      .toggle-option {
+        padding: 0.5rem 1rem;
+        cursor: pointer;
+        flex: 1;
+        text-align: center;
+        transition: all 0.2s;
+      }
+      .toggle-option.active {
+        background-color: #3f7fbf;
+        color: white;
+      }
+      .hidden {
+        display: none;
+      }
+      .availability-badge {
+        font-size: 0.75rem;
+        padding: 0.25rem 0.5rem;
+        border-radius: 0.25rem;
+        display: inline-block;
+        width: 80px;
+        text-align: center;
+      }
+      .available {
+        background-color: #e6ffed;
+        color: #166534;
+      }
+      .unavailable {
+        background-color: #fee2e2;
+        color: #991b1b;
+      }
+      .dropdown {
+        position: relative;
+        display: inline-block;
+      }
+      .dropdown-content {
+        display: none;
+        position: absolute;
+        background-color: white;
+        min-width: 200px;
+        box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.1);
+        z-index: 1;
+        border-radius: 0.5rem;
+        max-height: 300px;
+        overflow-y: auto;
+      }
+      .dropdown-content label {
+        display: block;
+        padding: 0.5rem 1rem;
+        cursor: pointer;
+      }
+      .dropdown-content label:hover {
+        background-color: #f8fafc;
+      }
+      .show {
+        display: block;
+      }
+      .dropdown-btn {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+      }
+    </style>
+  </head>
+  <body class="bg-gray-50 min-h-screen w-full flex flex-col items-center">
+    <div class="w-full max-w-4xl px-4">
+      <div class="flex items-center py-4 justify-between">
+        <div class="text-[#101418] flex items-center">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" fill="currentColor" viewBox="0 0 256 256">
+            <path d="M224,128a8,8,0,0,1-8,8H59.31l58.35,58.34a8,8,0,0,1-11.32,11.32l-72-72a8,8,0,0,1,0-11.32l72-72a8,8,0,0,1,11.32,11.32L59.31,120H216A8,8,0,0,1,224,128Z"></path>
+          </svg>
+        </div>
+        <h2 class="text-[#101418] text-2xl font-bold text-center flex-1">Faculty Timetable</h2>
+        <div class="w-6"></div>
+      </div>
+
+      <div class="flex flex-wrap gap-4 justify-center mb-4">
+        <div class="flex flex-col gap-4 w-full">
+          <div class="flex justify-center mb-4">
+            <div class="w-full max-w-md">
+              <select id="viewMode" class="w-full rounded-lg bg-white border border-gray-200 text-gray-700 py-2 px-4 focus:outline-none focus:ring-2 focus:ring-blue-100 focus:border-blue-300 text-sm">
+                <option value="teacherView">View Teacher's Timetable</option>
+                <option value="availabilityView">Find Available Teachers</option>
+                <option value="customTimetableView">Create Custom Timetable</option>
+              </select>
+            </div>
+          </div>
+          
+          <div id="teacherViewControls" class="flex flex-wrap gap-4 justify-center">
+            <select id="teacherSelect" class="form-input w-72 rounded-xl bg-[#eaedf1] h-14 text-[#101418] p-4 text-base">
+              <option disabled selected>Search By Teacher's Name</option>
+            </select>
+          </div>
+          
+          <div id="availabilityViewControls" class="hidden flex-col gap-4">
+            <div class="flex flex-wrap gap-4 justify-center">
+              <select id="daySelect" class="form-input w-48 rounded-xl bg-[#eaedf1] h-14 text-[#101418] p-4 text-base">
+                <option value="Monday">Monday</option>
+                <option value="Tuesday">Tuesday</option>
+                <option value="Wednesday">Wednesday</option>
+                <option value="Thursday">Thursday</option>
+                <option value="Friday">Friday</option>
+                <option value="Saturday">Saturday</option>
+              </select>
+              
+              <select id="timeSlotSelect" class="form-input w-48 rounded-xl bg-[#eaedf1] h-14 text-[#101418] p-4 text-base">
+                <option value="0">10:00 - 11:00 AM</option>
+                <option value="1">11:00 - 12:00 PM</option>
+                <option value="2">12:00 - 12:50 PM</option>
+                <option value="3">1:30 - 2:20 PM</option>
+                <option value="4">2:20 - 3:10 PM</option>
+                <option value="5">3:10 - 4:00 PM</option>
+              </select>
+            </div>
+            <button onclick="findAvailableTeachers()" class="bg-blue-100 hover:bg-blue-200 text-blue-600 font-medium py-2 px-4 rounded-lg text-sm transition-colors shadow-sm">
+              Find Available Teachers
+            </button>
+          </div>
+
+          <!-- Custom Timetable View Controls -->
+          <div id="customTimetableViewControls" class="hidden flex-col gap-4">
+            <div class="toggle-container">
+              <div id="dayBasedOption" class="toggle-option active" onclick="toggleCustomTimetableType('dayBased')">Day-Based</div>
+              <div id="hourBasedOption" class="toggle-option" onclick="toggleCustomTimetableType('hourBased')">Hour-Based</div>
+            </div>
+
+            <div id="dayBasedFields">
+              <div class="flex flex-wrap gap-4 justify-center">
+                <select id="customDaySelect" class="form-input w-48 rounded-xl bg-[#eaedf1] h-14 text-[#101418] p-4 text-base">
+                  <option value="Monday">Monday</option>
+                  <option value="Tuesday">Tuesday</option>
+                  <option value="Wednesday">Wednesday</option>
+                  <option value="Thursday">Thursday</option>
+                  <option value="Friday">Friday</option>
+                  <option value="Saturday">Saturday</option>
+                </select>
+                
+                <div class="dropdown form-input w-48 rounded-xl bg-[#eaedf1] h-14 text-[#101418] p-4 text-base">
+                  <div onclick="toggleDropdown('timeSlotDropdown')" class="dropdown-btn">
+                    <span id="timeSlotDropdownText">Select Time Slots (Optional)</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 256 256">
+                      <path d="M213.66,101.66l-80,80a8,8,0,0,1-11.32,0l-80-80A8,8,0,0,1,53.66,90.34L128,164.69l74.34-74.35a8,8,0,0,1,11.32,11.32Z"></path>
+                    </svg>
+                  </div>
+                  <div id="timeSlotDropdown" class="dropdown-content">
+                    <label><input type="checkbox" value="0" onchange="updateSelectedTimeSlots()"> 10:00 - 11:00 AM</label>
+                    <label><input type="checkbox" value="1" onchange="updateSelectedTimeSlots()"> 11:00 - 12:00 PM</label>
+                    <label><input type="checkbox" value="2" onchange="updateSelectedTimeSlots()"> 12:00 - 12:50 PM</label>
+                    <label><input type="checkbox" value="3" onchange="updateSelectedTimeSlots()"> 1:30 - 2:20 PM</label>
+                    <label><input type="checkbox" value="4" onchange="updateSelectedTimeSlots()"> 2:20 - 3:10 PM</label>
+                    <label><input type="checkbox" value="5" onchange="updateSelectedTimeSlots()"> 3:10 - 4:00 PM</label>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div id="hourBasedFields" class="hidden">
+              <div class="flex flex-wrap gap-4 justify-center">
+                <input type="time" id="startTime" class="form-input w-48 rounded-xl bg-[#eaedf1] h-14 text-[#101418] p-4 text-base" value="10:00">
+                <input type="time" id="endTime" class="form-input w-48 rounded-xl bg-[#eaedf1] h-14 text-[#101418] p-4 text-base" value="11:00">
+              </div>
+              <div class="flex flex-wrap gap-4 justify-center mt-2">
+                <div class="dropdown form-input w-48 rounded-xl bg-[#eaedf1] h-14 text-[#101418] p-4 text-base">
+                  <div onclick="toggleDropdown('daysDropdown')" class="dropdown-btn">
+                    <span id="daysDropdownText">Select Days</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 256 256">
+                      <path d="M213.66,101.66l-80,80a8,8,0,0,1-11.32,0l-80-80A8,8,0,0,1,53.66,90.34L128,164.69l74.34-74.35a8,8,0,0,1,11.32,11.32Z"></path>
+                    </svg>
+                  </div>
+                  <div id="daysDropdown" class="dropdown-content">
+                    <label><input type="checkbox" value="Monday" onchange="updateSelectedDays()"> Monday</label>
+                    <label><input type="checkbox" value="Tuesday" onchange="updateSelectedDays()"> Tuesday</label>
+                    <label><input type="checkbox" value="Wednesday" onchange="updateSelectedDays()"> Wednesday</label>
+                    <label><input type="checkbox" value="Thursday" onchange="updateSelectedDays()"> Thursday</label>
+                    <label><input type="checkbox" value="Friday" onchange="updateSelectedDays()"> Friday</label>
+                    <label><input type="checkbox" value="Saturday" onchange="updateSelectedDays()"> Saturday</label>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <button onclick="generateCustomTimetable()" class="bg-green-100 hover:bg-green-200 text-green-600 font-medium py-2 px-4 rounded-lg text-sm transition-colors shadow-sm">
+              Generate Timetable
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="flex justify-center gap-5 flex-wrap border-b border-[#d4dbe2] pb-2 mb-4" id="dayTabs">
+        <button onclick="renderTimetable('Monday')" class="tab-btn px-3">Mon</button>
+        <button onclick="renderTimetable('Tuesday')" class="tab-btn px-3">Tue</button>
+        <button onclick="renderTimetable('Wednesday')" class="tab-btn px-3">Wed</button>
+        <button onclick="renderTimetable('Thursday')" class="tab-btn px-3">Thu</button>
+        <button onclick="renderTimetable('Friday')" class="tab-btn px-3">Fri</button>
+        <button onclick="renderTimetable('Saturday')" class="tab-btn px-3">Sat</button>
+      </div>
+
+      <div id="timetable" class="space-y-6"></div>
+      <div id="availabilityResults" class="hidden space-y-4"></div>
+      <div id="customTimetableResults" class="hidden space-y-4"></div>
+    </div>
+
+    <script>
+      const timeSlots = [
+        "10:00 - 11:00 AM",
+        "11:00 - 12:00 PM",
+        "12:00 - 12:50 PM",
+        "1:30 - 2:20 PM",
+        "2:20 - 3:10 PM",
+        "3:10 - 4:00 PM"
+      ];
+
+      const teacherSelect = document.getElementById("teacherSelect");
+      const timetableContainer = document.getElementById("timetable");
+      const tabButtons = document.querySelectorAll(".tab-btn");
+      const viewModeSelect = document.getElementById("viewMode");
+      const teacherViewControls = document.getElementById("teacherViewControls");
+      const availabilityViewControls = document.getElementById("availabilityViewControls");
+      const customTimetableViewControls = document.getElementById("customTimetableViewControls");
+      const availabilityResults = document.getElementById("availabilityResults");
+      const customTimetableResults = document.getElementById("customTimetableResults");
+      const daySelect = document.getElementById("daySelect");
+      const timeSlotSelect = document.getElementById("timeSlotSelect");
+      const dayTabs = document.getElementById("dayTabs");
+
+      const teachers = [
+        {
+            name: "Mrs. Sudha",
+            subject: "Basic Electrical Engineering (BEE)",
+            dept: "CSE",
+            timetable: {
+              Monday: ["No class","CSE-E - BEE","No class","No class","CSE-C - BEE"],
+              Tuesday: ["No class","CSE-E - BEE","No class","CSE-C - BEE LAB","CSE-C - BEE LAB","CSE-C - BEE LAB"],
+              Wednesday: ["CSE-E - BEE LAB","CSE-E - BEE LAB","CSE-E - BEE LAB","CSE-E - BEE", "No class","No class"],
+              Thursday: ["No class","No class","CSE-C- BEE","No class", "CSE-E - BEE","No class"],
+              Friday: ["CSE-C - BEE", "No class", "CSE-E - BEE","CSE-E - BEE LAB","CSE-E - BEE LAB", "CSE-E - BEE LAB"],
+              Saturday: ["CSE-C - BEE LAB","CSE-C - BEE LAB","CSE-C - BEE LAB", "CSE-C - BEE", "No class", "CSM-A - MENTOR"]
+            },
+            room:"1108"
+        },
+        {
+          name: "Mrs. Rekha Rani",
+          subject: "Engineering Physics(EP)",
+          dept: "CSE",
+          timetable: {
+            Monday: ["CSE-C - EP","CSE-D - EP", "CSE-E - EP","CSE-D - EP Lab","CSE-D - EP Lab","CSE-D - EP Lab"],
+            Tuesday: ["CSE-E - EP","No class", "CSE-C - EP","CSE-C - EP Lab","CSE-C - EP Lab","CSE-C - EP Lab"],
+            Wednesday: ["CSE-E - EP Lab","CSE-E - EP Lab","CSE-E - EP Lab", "CSE-C - EP","No class", "CSE-E - EP"],
+            Thursday: ["CSE-D - EP Lab","CSE-D - EP Lab","CSE-D - EP Lab","No class", "CSE-D - EP","No class"],
+            Friday: ["CSE-E - EP", "CSE-D - EP", "CSE-C - EP","CSE-E - EP Lab","CSE-E - EP Lab","CSE-E - EP Lab"],
+            Saturday: ["CSE-C - EP Lab","CSE-C - EP Lab","CSE-C - EP Lab","CSE-E - EP", "CSE-C - EP", "CSE-D - EP"]
+          },
+          room:"1108"
+        },
+        {
+          name: "Mr. Gopi Krishna",
+          subject: "Differential Equations and Numerical Methods (DE&NM)",
+          dept: "CSE",
+          timetable: {
+            Monday: ["CSE-E - DE&NM", "No class", "CSE-D - DE&NM", "No class", "No class", "No class"],
+            Tuesday: ["CSE-C - DE&NM", "No class", "No class", "CSE-E - DE&NM", "No class", "No class"],
+            Wednesday: ["No class", "CSE-D - DE&NM", "CSE-C - DE&NM", "No class", "CSE-E - DE&NM", "No class"],
+            Thursday: ["CSE-C - DE&NM", "No class", "No class", "CSE-D - DE&NM", "No class", "CSE-E - DE&NM"],
+            Friday: ["No class", "CSE-E - DE&NM", "CSE-D - DE&NM", "CSE-C - DE&NM", "No class", "No class"],
+            Saturday: ["No class", "CSE-D - DE&NM", "CSE-E - DE&NM", "CSE-D - DE&NM", "No class", "CSE-C - DE&NM"]
+          },
+          room: "1108"
+        },
+        {
+          name: "Mr. Kartheek",
+          subject: "Scientific Programming (SP)",
+          dept: "CSE",
+          timetable: {
+            Monday: ["CSE-A - SP", "No class", "No class", "CSE-E - SP Lab", "CSE-E - SP Lab", "CSE-E - SP Lab"],
+            Tuesday: ["No class", "No class", "CSE-E - SP", "CSE-A - SP", "No class", "No class"],
+            Wednesday: ["CSE-A - SP Lab", "CSE-A - SP Lab", "CSE-A - SP Lab", "No class", "No class", "No class"],
+            Thursday: ["CSE-E - SP", "No class", "No class", "CSE-E - SP", "No class", "No class"],
+            Friday: ["CSE-A - SP", "No class", "No class", "No class", "No class", "No class"],
+            Saturday: ["CSE-E - SP", "No class", "No class", "CSE-A - SP", "No class", "No class"]
+          },
+          room: "1108"
+        },
+        {
+          name: "Mrs. Deepthi",
+          subject: "Indian Constitution (IC)",
+          dept: "CSE",
+          timetable: {
+            Monday: ["No class", "CSE-A - IC", "No class", "No class", "No class", "No class"],
+            Tuesday: ["No class", "No class", "No class", "No class", "CSE-E - IC", "No class"],
+            Wednesday: ["No class", "No class", "No class", "No class", "No class", "No class"],
+            Thursday: ["No class", "CSE-B - IC", "No class", "No class", "No class", "No class"],
+            Friday: ["No class", "No class", "No class", "No class", "No class", "No class"],
+            Saturday: ["No class", "CSE-E - IC", "No class", "CSE-B - IC", "CSE-A - IC", "No class"]
+          },
+          room: "1108"
+        },
+        {
+          name: "Mrs. Sneha Priya",
+          subject: "Engineering Graphics (EG)",
+          dept: "CSE",
+          timetable: {
+            Monday: ["No class", "CSE-C - EG","CSE-C - EG", "No class", "No class", "No class"],
+            Tuesday: ["No class", "CSE-D - EG","CSE-D - EG", "No class", "No class", "No class"],
+            Wednesday: ["No class", "No class", "No class", "No class", "CSE-C - EG","CSE-C - EG",],
+            Thursday: ["No class", "CSE-E - EG","CSE-E - EG", "No class", "No class", "No class"],
+            Friday: ["No class", "No class", "No class", "No class", "CSE-D - EG","CSE-D - EG"],
+            Saturday: ["No class", "No class", "No class", "No class", "CSE-E - EG","CSE-E - EG"]
+          },
+          room: "1108"
+        },
+      ];
+
+      // Initialize the teacher dropdown
+      teachers.forEach(({ name }) => {
+        const opt = new Option(name, name);
+        teacherSelect.appendChild(opt);
+      });
+
+      // Set default selected teacher
+      if (teachers.length > 0) {
+        teacherSelect.value = teachers[0].name;
+      }
+
+      // Event listeners
+      teacherSelect.addEventListener("change", () => {
+        renderTimetable("Monday");
+      });
+
+      viewModeSelect.addEventListener("change", (e) => {
+        const mode = e.target.value;
+        
+        teacherViewControls.classList.toggle("hidden", mode !== "teacherView");
+        availabilityViewControls.classList.toggle("hidden", mode !== "availabilityView");
+        customTimetableViewControls.classList.toggle("hidden", mode !== "customTimetableView");
+        
+        timetableContainer.classList.toggle("hidden", mode !== "teacherView");
+        availabilityResults.classList.toggle("hidden", mode !== "availabilityView");
+        customTimetableResults.classList.toggle("hidden", mode !== "customTimetableView");
+        dayTabs.classList.toggle("hidden", mode !== "teacherView");
+        
+        if (mode === "teacherView") {
+          renderTimetable("Monday");
+        }
+      });
+
+      // Close dropdowns when clicking outside
+      window.onclick = function(event) {
+        if (!event.target.matches('.dropdown-btn')) {
+          const dropdowns = document.getElementsByClassName("dropdown-content");
+          for (let i = 0; i < dropdowns.length; i++) {
+            const openDropdown = dropdowns[i];
+            if (openDropdown.classList.contains('show')) {
+              openDropdown.classList.remove('show');
+            }
+          }
+        }
+      }
+
+      // Initial render
+      renderTimetable("Monday");
+
+      function toggleDropdown(id) {
+        document.getElementById(id).classList.toggle("show");
+      }
+
+      function toggleCustomTimetableType(type) {
+        document.getElementById('dayBasedOption').classList.toggle('active', type === 'dayBased');
+        document.getElementById('hourBasedOption').classList.toggle('active', type === 'hourBased');
+        document.getElementById('dayBasedFields').classList.toggle('hidden', type !== 'dayBased');
+        document.getElementById('hourBasedFields').classList.toggle('hidden', type !== 'hourBased');
+      }
+
+      function updateSelectedTimeSlots() {
+        const checkboxes = document.querySelectorAll('#timeSlotDropdown input[type="checkbox"]');
+        const selected = Array.from(checkboxes).filter(cb => cb.checked).map(cb => cb.value);
+        
+        if (selected.length === 0) {
+          document.getElementById('timeSlotDropdownText').textContent = "Select Time Slots (Optional)";
+        } else {
+          document.getElementById('timeSlotDropdownText').textContent = `${selected.length} time slot${selected.length > 1 ? 's' : ''} selected`;
+        }
+      }
+
+      function updateSelectedDays() {
+        const checkboxes = document.querySelectorAll('#daysDropdown input[type="checkbox"]');
+        const selected = Array.from(checkboxes).filter(cb => cb.checked).map(cb => cb.value);
+        
+        if (selected.length === 0) {
+          document.getElementById('daysDropdownText').textContent = "Select Days";
+        } else {
+          document.getElementById('daysDropdownText').textContent = `${selected.length} day${selected.length > 1 ? 's' : ''} selected`;
+        }
+      }
+
+      function generateCustomTimetable() {
+        const viewType = document.querySelector('.toggle-option.active').id.replace('Option', '');
+        const resultsContainer = document.getElementById('customTimetableResults');
+        resultsContainer.innerHTML = '';
+        
+        if (viewType === 'dayBased') {
+          const day = document.getElementById('customDaySelect').value;
+          const checkboxes = document.querySelectorAll('#timeSlotDropdown input[type="checkbox"]:checked');
+          const selectedSlots = checkboxes.length > 0 
+            ? Array.from(checkboxes).map(cb => parseInt(cb.value))
+            : null; // Null means all slots
+          
+          const availableTeachers = findAvailableTeachersForCustomTimetable(day, selectedSlots);
+          displayCustomTimetableResults(availableTeachers, day, selectedSlots);
+          
+        } else { // hourBased
+          const startTime = document.getElementById('startTime').value;
+          const endTime = document.getElementById('endTime').value;
+          const dayCheckboxes = document.querySelectorAll('#daysDropdown input[type="checkbox"]:checked');
+          
+          if (dayCheckboxes.length === 0) {
+            resultsContainer.innerHTML = '<div class="bg-white p-4 rounded-lg shadow-sm text-center text-red-500">Please select at least one day</div>';
+            return;
+          }
+          
+          const selectedDays = Array.from(dayCheckboxes).map(cb => cb.value);
+          const selectedSlots = convertTimeRangeToSlots(startTime, endTime);
+          
+          if (selectedSlots.length === 0) {
+            resultsContainer.innerHTML = '<div class="bg-white p-4 rounded-lg shadow-sm text-center text-red-500">No time slots match your selected time range</div>';
+            return;
+          }
+          
+          const availabilityByDay = {};
+          selectedDays.forEach(day => {
+            availabilityByDay[day] = findAvailableTeachersForCustomTimetable(day, selectedSlots);
+          });
+          
+          displayHourBasedTimetableResults(availabilityByDay, selectedSlots);
+        }
+      }
+
+      function convertTimeRangeToSlots(startTime, endTime) {
+        const startHour = parseInt(startTime.split(':')[0]);
+        const endHour = parseInt(endTime.split(':')[0]);
+        const selectedSlots = [];
+        
+        for (let i = 0; i < timeSlots.length; i++) {
+          const slotStart = parseInt(timeSlots[i].split(':')[0]);
+          const slotEnd = slotStart === 12 ? 13 : slotStart + 1; // Handle 12-1pm slot
+          
+          if ((slotStart >= startHour && slotStart < endHour) || 
+              (slotEnd > startHour && slotEnd <= endHour)) {
+            selectedSlots.push(i);
+          }
+        }
+        
+        return selectedSlots;
+      }
+
+      function findAvailableTeachersForCustomTimetable(day, slotIndices) {
+        // If no slots selected, check all slots
+        const slotsToCheck = slotIndices === null ? [0, 1, 2, 3, 4, 5] : slotIndices;
+        
+        return teachers.filter(teacher => {
+          const schedule = teacher.timetable[day] || [];
+          return slotsToCheck.every(slotIndex => schedule[slotIndex] === "No class");
+        });
+      }
+
+      function displayCustomTimetableResults(availableTeachers, day, slotIndices) {
+        const resultsContainer = document.getElementById('customTimetableResults');
+        resultsContainer.innerHTML = '';
+        
+        const heading = document.createElement('h3');
+        heading.className = 'text-xl font-bold text-[#101418] mb-4';
+        
+        if (slotIndices === null) {
+          heading.textContent = `Teachers with no classes all day on ${day}`;
+        } else {
+          const slotText = slotIndices.length === 1 
+            ? timeSlots[slotIndices[0]] 
+            : `${slotIndices.length} selected time slots`;
+          heading.textContent = `Teachers with no classes at ${slotText} on ${day}`;
+        }
+        
+        resultsContainer.appendChild(heading);
+        
+        if (availableTeachers.length === 0) {
+          resultsContainer.innerHTML += `
+            <div class="bg-white p-4 rounded-lg shadow-sm text-center">
+              <p class="text-gray-700">No teachers available for the selected criteria</p>
+            </div>
+          `;
+          return;
+        }
+        
+        availableTeachers.forEach(teacher => {
+          const card = document.createElement('div');
+          card.className = 'teacher-card bg-white p-4 rounded-lg shadow-sm flex items-center gap-4';
+          
+          const icon = document.createElement('div');
+          icon.className = 'bg-blue-100 p-3 rounded-full';
+          icon.innerHTML = `
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="#3f7fbf" viewBox="0 0 256 256">
+              <path d="M128,24A104,104,0,1,0,232,128,104.11,104.11,0,0,0,128,24Zm0,192a88,88,0,1,1,88-88A88.1,88.1,0,0,1,128,216Zm64-88a8,8,0,0,1-8,8H128a8,8,0,0,1-8-8V72a8,8,0,0,1,16,0v48h48A8,8,0,0,1,192,128Z"></path>
+            </svg>
+          `;
+          
+          const info = document.createElement('div');
+          info.className = 'flex-1';
+          info.innerHTML = `
+            <p class="font-bold text-lg">${teacher.name}</p>
+            <p class="text-gray-600">${teacher.subject}</p>
+            <p class="text-sm text-gray-500">Department: ${teacher.dept}</p>
+          `;
+          
+          card.appendChild(icon);
+          card.appendChild(info);
+          resultsContainer.appendChild(card);
+        });
+      }
+
+      function displayHourBasedTimetableResults(availabilityByDay, selectedSlots) {
+        const resultsContainer = document.getElementById('customTimetableResults');
+        resultsContainer.innerHTML = '';
+        
+        const heading = document.createElement('h3');
+        heading.className = 'text-xl font-bold text-[#101418] mb-4';
+        
+        const startTime = timeSlots[selectedSlots[0]].split(' - ')[0];
+        const endTime = timeSlots[selectedSlots[selectedSlots.length-1]].split(' - ')[1];
+        heading.textContent = `Teachers with no classes from ${startTime} to ${endTime}`;
+        
+        resultsContainer.appendChild(heading);
+        
+        // Group teachers by their availability across all selected days
+        const teacherAvailability = {};
+        teachers.forEach(teacher => {
+          teacherAvailability[teacher.name] = {
+            teacher,
+            availableDays: []
+          };
+        });
+        
+        Object.entries(availabilityByDay).forEach(([day, availableTeachers]) => {
+          availableTeachers.forEach(teacher => {
+            teacherAvailability[teacher.name].availableDays.push(day);
+          });
+        });
+        
+        // Filter teachers available on at least one day
+        const availableTeachers = Object.values(teacherAvailability)
+          .filter(ta => ta.availableDays.length > 0)
+          .sort((a, b) => b.availableDays.length - a.availableDays.length);
+        
+        if (availableTeachers.length === 0) {
+          resultsContainer.innerHTML += `
+            <div class="bg-white p-4 rounded-lg shadow-sm text-center">
+              <p class="text-gray-700">No teachers available for the selected criteria</p>
+            </div>
+          `;
+          return;
+        }
+        
+        // Create a table for better organization
+        const table = document.createElement('table');
+        table.className = 'w-full bg-white rounded-lg shadow-sm';
+        
+        // Header row
+        const headerRow = document.createElement('tr');
+        headerRow.className = 'border-b border-gray-200';
+        
+        const teacherHeader = document.createElement('th');
+        teacherHeader.className = 'text-left p-3';
+        teacherHeader.textContent = 'Teacher';
+        headerRow.appendChild(teacherHeader);
+        
+        const daysHeader = document.createElement('th');
+        daysHeader.className = 'text-left p-3';
+        daysHeader.textContent = 'Available Days';
+        headerRow.appendChild(daysHeader);
+        
+        table.appendChild(headerRow);
+        
+        // Teacher rows
+        availableTeachers.forEach(({teacher, availableDays}) => {
+          const row = document.createElement('tr');
+          row.className = 'border-b border-gray-100 hover:bg-gray-50';
+          
+          const nameCell = document.createElement('td');
+          nameCell.className = 'p-3';
+          nameCell.innerHTML = `
+            <div class="font-medium">${teacher.name}</div>
+            <div class="text-sm text-gray-500">${teacher.subject}</div>
+          `;
+          row.appendChild(nameCell);
+          
+          const daysCell = document.createElement('td');
+          daysCell.className = 'p-3';
+          daysCell.innerHTML = `
+            <div class="flex flex-wrap gap-1">
+              ${availableDays.map(day => 
+                `<span class="bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded">${day.substring(0, 3)}</span>`
+              ).join('')}
+            </div>
+            <div class="text-sm text-gray-500 mt-1">${availableDays.length} day${availableDays.length > 1 ? 's' : ''}</div>
+          `;
+          row.appendChild(daysCell);
+          
+          table.appendChild(row);
+        });
+        
+        resultsContainer.appendChild(table);
+      }
+
+      function renderTimetable(day) {
+        // Remove 'active' class from all day buttons
+        tabButtons.forEach(btn => btn.classList.remove("active"));
+
+        // Find the button that matches the current day (e.g., "Mon" from "Monday") and set it as active
+        [...tabButtons].find(btn => btn.textContent === day.slice(0, 3)).classList.add("active");
+
+        // Clear the current timetable
+        timetableContainer.innerHTML = "";
+
+        // Get the selected teacher
+        const selectedName = teacherSelect.value;
+        const teacher = teachers.find(t => t.name === selectedName);
+
+        // If no teacher or no schedule for the selected day
+        if (!teacher || !teacher.timetable[day]) {
+          timetableContainer.innerHTML = `<p class='text-center text-[#5c738a] py-4'>No classes scheduled for ${day}.</p>`;
+          return;
+        }
+
+        teacher.timetable[day].forEach((entry, index) => {
+          // Insert Lunch Break block between 3rd and 4th slot (index 2 and 3)
+          if (index === 3) {
+            const lunchDiv = document.createElement("div");
+            lunchDiv.className = "px-4 py-2 text-center font-semibold text-[#bf3f3f] bg-[#ffe1e1] rounded-lg shadow-sm";
+            lunchDiv.textContent = "🍽️ Lunch Break (12:50 PM - 1:30 PM)";
+            timetableContainer.appendChild(lunchDiv);
+          }
+
+          const wrapper = document.createElement("div");
+
+          const heading = document.createElement("h3");
+          heading.className = "text-[#101418] text-lg font-bold tracking-tight px-4 pb-2 pt-4";
+          heading.textContent = timeSlots[index];
+          wrapper.appendChild(heading);
+
+          const slot = document.createElement("div");
+          // Check if the entry is a lab to apply different styling
+          const isLab = entry.toLowerCase().includes("lab");
+
+          slot.className = `flex items-center gap-4 px-4 py-2 min-h-[72px] rounded-lg shadow-sm ${
+            isLab ? "bg-blue-100" : "bg-gray-50"
+          }`;
+
+          const icon = document.createElement("div");
+          icon.className = "text-[#101418] flex items-center justify-center rounded-lg size-12 shrink-0";
+
+          // Different icon for labs
+          if (isLab) {
+            icon.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" fill="#2563EB" viewBox="0 0 24 24"><path d="M6 2a2 2 0 0 0-2 2v12a4 4 0 0 0 4 4h4a4 4 0 0 0 4-4V7l-5-5H6zM7 4h4v4H7V4z"/></svg>`;
+          } else {
+            icon.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" fill="currentColor" viewBox="0 0 256 256"><path d="M128,24A104,104,0,1,0,232,128,104.11,104.11,0,0,0,128,24Zm0,192a88,88,0,1,1,88-88A88.1,88.1,0,0,1,128,216Zm64-88a8,8,0,0,1-8,8H128a8,8,0,0,1-8-8V72a8,8,0,0,1,16,0v48h48A8,8,0,0,1,192,128Z"></path></svg>`;
+          }
+          slot.appendChild(icon);
+
+          const info = document.createElement("div");
+          info.className = "flex flex-col justify-center";
+          info.innerHTML = `<p class="text-[#101418] text-base font-medium">${teacher.name} - ${entry}</p>
+                            <p class="text-[#5c738a] text-sm">${teacher.room}</p>`;
+
+          slot.appendChild(info);
+          wrapper.appendChild(slot);
+          timetableContainer.appendChild(wrapper);
+        });
+      }
+
+      function findAvailableTeachers() {
+        const selectedDay = daySelect.value;
+        const selectedTimeSlot = parseInt(timeSlotSelect.value);
+        
+        // Filter teachers who have "No class" at the selected time
+        const availableTeachers = teachers.filter(teacher => {
+          const daySchedule = teacher.timetable[selectedDay];
+          return daySchedule && daySchedule[selectedTimeSlot] === "No class";
+        });
+        
+        // Display results
+        availabilityResults.innerHTML = "";
+        
+        if (availableTeachers.length === 0) {
+          availabilityResults.innerHTML = `
+            <div class="bg-white p-6 rounded-lg shadow-sm text-center">
+              <p class="text-lg font-medium text-gray-700">No teachers available at this time</p>
+              <p class="text-gray-500">All teachers have classes during ${timeSlots[selectedTimeSlot]} on ${selectedDay}</p>
+            </div>
+          `;
+          return;
+        }
+        
+        const heading = document.createElement("h3");
+        heading.className = "text-xl font-bold text-[#101418] mb-4";
+        heading.textContent = `Available Teachers for ${timeSlots[selectedTimeSlot]} on ${selectedDay}`;
+        availabilityResults.appendChild(heading);
+        
+        availableTeachers.forEach(teacher => {
+          const card = document.createElement("div");
+          card.className = "teacher-card bg-white p-4 rounded-lg shadow-sm flex items-center gap-4";
+          
+          const icon = document.createElement("div");
+          icon.className = "bg-blue-100 p-3 rounded-full";
+          icon.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" fill="currentColor" viewBox="0 0 256 256"><path d="M128,24A104,104,0,1,0,232,128,104.11,104.11,0,0,0,128,24Zm0,192a88,88,0,1,1,88-88A88.1,88.1,0,0,1,128,216Zm64-88a8,8,0,0,1-8,8H128a8,8,0,0,1-8-8V72a8,8,0,0,1,16,0v48h48A8,8,0,0,1,192,128Z"></path></svg>`;
+          
+          const info = document.createElement("div");
+          info.className = "flex-1";
+          info.innerHTML = `
+            <p class="font-bold text-lg">${teacher.name}</p>
+            <p class="text-gray-600">${teacher.subject}</p>
+            <p class="text-sm text-gray-500">Department: ${teacher.dept}</p>
+          `;
+          
+          card.appendChild(icon);
+          card.appendChild(info);
+          availabilityResults.appendChild(card);
+        });
+      }
+    </script>
+  </body>
+</html>

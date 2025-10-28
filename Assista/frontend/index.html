@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Assista Login</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      background: linear-gradient(to bottom, #f5fafe, #e6f0f9);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .login-container {
+      background: #ffffff;
+      padding: 40px;
+      border-radius: 20px;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+      width: 100%;
+      max-width: 400px;
+      text-align: center;
+    }
+
+    .logo {
+      width: 70px;
+      margin-bottom: 20px;
+    }
+
+    .title {
+      font-size: 24px;
+      font-weight: bold;
+      color: #333;
+      margin-bottom: 6px;
+    }
+
+    .subtitle {
+      font-size: 14px;
+      color: #666;
+      margin-bottom: 30px;
+    }
+
+    input {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 20px;
+      border: none;
+      border-radius: 12px;
+      background-color: #f0f4f8;
+      font-size: 14px;
+    }
+
+    .forgot {
+      font-size: 12px;
+      color: #007BFF;
+      text-align: right;
+      margin-bottom: 20px;
+      display: block;
+      cursor: pointer;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      background-color: #007BFF;
+      border: none;
+      color: white;
+      font-size: 16px;
+      border-radius: 30px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+
+    .signup {
+      margin-top: 20px;
+      font-size: 14px;
+    }
+
+    .signup a {
+      color: #007BFF;
+      text-decoration: none;
+    }
+
+    .signup a:hover {
+      text-decoration: underline;
+    }
+
+    .error {
+      color: red;
+      font-size: 12px;
+      margin-bottom: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="login-container">
+    <img src="assets/logo.jpg" alt="Logo" class="logo" />
+    <div class="title">Assista</div>
+    <div class="subtitle">Your Personal College Assistant</div>
+
+    <form id="loginForm">
+      <div class="error" id="errorMsg"></div>
+      <input type="text" id="rollNo" placeholder="Roll Number" required />
+      <input type="password" id="password" placeholder="Password" required />
+      <span class="forgot">Forgot Password?</span>
+      <button type="submit">Login</button>
+    </form>
+
+    <div class="signup">
+      Don’t have an account? <a href="signup.html">Sign up</a>
+    </div>
+  </div>
+
+  <script>
+  document.getElementById("loginForm").addEventListener("submit", async function (e) {
+    e.preventDefault();
+
+    const rollNo = document.getElementById("rollNo").value.trim();
+    const password = document.getElementById("password").value.trim();
+    const errorMsg = document.getElementById("errorMsg");
+
+    try {
+      const response = await fetch("http://127.0.0.1:8000/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ rollNo, password })
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        localStorage.setItem("rollNo", rollNo);
+        localStorage.setItem("studentName", data.name);
+        window.location.href = "dashboard.html"; // Redirect after login
+      } else {
+        errorMsg.textContent = data.detail || "Invalid login credentials.";
+      }
+    } catch (error) {
+      console.error(error);
+      errorMsg.textContent = "⚠️ Error connecting to server.";
+    }
+  });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Calendar App</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+  <style>
+    body { font-family: 'Noto Sans', sans-serif; }
+    .day-button {
+      height: 48px; width: 48px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; background-color: transparent; color: #0e141b;
+    }
+    .day-button:hover { background-color: #e0e7ff; }
+    .day-button.selected { background-color: #1978e5; color: white; }
+    .add-task-btn {
+      background-color: #1978e5; color: white; padding: 8px 12px;
+      border-radius: 8px; font-weight: 600;
+    }
+    .add-task-btn:hover { background-color: #145ec0; }
+    .add-task-form { display: none; }
+  </style>
+</head>
+<body class="bg-gray-50 text-[#101418] min-h-screen p-4">
+  <div class="max-w-screen-md mx-auto space-y-12">
+    <div class="flex items-center justify-between pb-4">
+      <h2 class="text-lg font-bold">Calendar</h2>
+      <button onclick="toggleTaskForm()" class="add-task-btn">+ Add Task</button>
+    </div>
+
+    <div class="flex items-center justify-between mb-2">
+      <button onclick="changeMonth(-1)">&#8592;</button>
+      <p class="month-display text-base font-bold"></p>
+      <button onclick="changeMonth(1)">&#8594;</button>
+    </div>
+
+    <div class="grid grid-cols-7 gap-1 days-container mb-4"></div>
+
+    <div class="task-display space-y-2 text-sm text-[#101418]"></div>
+
+    <div class="add-task-form" id="add-task-form">
+      <h4 class="text-base font-bold mb-2">Add Task</h4>
+      <form id="task-form" onsubmit="addTask(event)">
+        <input type="text" id="task-input" placeholder="Task description" required class="border rounded p-2 w-full mb-2" />
+        <input type="text" id="time-input" placeholder="Select time" required class="border rounded p-2 w-full mb-2" />
+        <button type="submit" class="bg-[#1978e5] text-white rounded p-2 w-full">Add Task</button>
+      </form>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+  <script>
+  let currentDate = new Date();
+  let selectedDay = null;
+  let tasks = JSON.parse(localStorage.getItem("tasks")) || {};
+
+  function updateCalendar() {
+    const monthDisplay = document.querySelector('.month-display');
+    const daysContainer = document.querySelector('.days-container');
+    monthDisplay.textContent = currentDate.toLocaleDateString('default', {
+      month: 'long',
+      year: 'numeric'
+    });
+
+    daysContainer.innerHTML = '';
+    const firstDay = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
+    const lastDay = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0);
+    const startDay = firstDay.getDay();
+
+    for (let i = 0; i < startDay; i++) {
+      const emptyDiv = document.createElement('div');
+      daysContainer.appendChild(emptyDiv);
+    }
+
+    for (let i = 1; i <= lastDay.getDate(); i++) {
+      const dayButton = document.createElement('button');
+      dayButton.textContent = i;
+      dayButton.className = 'day-button';
+      if (i === selectedDay) {
+        dayButton.classList.add('selected');
+      }
+
+      dayButton.onclick = (e) => {
+        selectedDay = i;
+        document.querySelectorAll('.day-button').forEach(btn => btn.classList.remove('selected'));
+        e.target.classList.add('selected');
+        showTasks(i);
+      };
+
+      daysContainer.appendChild(dayButton);
+    }
+
+    // Auto-select today only if no date was previously selected
+    const today = new Date();
+    if (
+      selectedDay === null &&
+      today.getMonth() === currentDate.getMonth() &&
+      today.getFullYear() === currentDate.getFullYear()
+    ) {
+      selectedDay = today.getDate();
+      setTimeout(() => {
+        const buttons = document.querySelectorAll('.day-button');
+        buttons[selectedDay - 1]?.classList.add('selected');
+        showTasks(selectedDay);
+      }, 0);
+    }
+  }
+
+  function getDateKey(date, day) {
+    return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+  }
+
+  function showTasks(day) {
+    selectedDay = day;
+    const taskDisplay = document.querySelector('.task-display');
+    taskDisplay.innerHTML = '';
+    const dateKey = getDateKey(currentDate, day);
+    const list = tasks[dateKey] || [];
+
+    if (!list.length) {
+      taskDisplay.textContent = 'No tasks for this date.';
+      return;
+    }
+
+    list.forEach((task, idx) => {
+      const div = document.createElement('div');
+      div.className = "flex items-center justify-between bg-white px-4 py-2 rounded shadow-sm mb-2";
+
+      const left = document.createElement('div');
+      left.className = "flex items-center gap-2";
+
+      const checkbox = document.createElement('input');
+      checkbox.type = 'checkbox';
+      checkbox.checked = task.done;
+      checkbox.onchange = () => {
+        task.done = checkbox.checked;
+        localStorage.setItem('tasks', JSON.stringify(tasks));
+        label.className = checkbox.checked ? 'line-through text-gray-500' : '';
+      };
+
+      const label = document.createElement('label');
+      const safeText = task.text || 'Untitled task';
+      const safeTime = task.time || 'No time';
+      label.textContent = `${safeText} at ${safeTime}`;
+      label.className = checkbox.checked ? 'line-through text-gray-500' : '';
+
+      left.appendChild(checkbox);
+      left.appendChild(label);
+
+      const deleteBtn = document.createElement('button');
+      deleteBtn.innerHTML = `
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-red-500 hover:text-red-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+        </svg>
+      `;
+      deleteBtn.title = "Delete Task";
+      deleteBtn.onclick = () => deleteTask(dateKey, idx);
+
+      div.appendChild(left);
+      div.appendChild(deleteBtn);
+      taskDisplay.appendChild(div);
+    });
+  }
+
+  function deleteTask(dateKey, index) {
+    if (!tasks[dateKey]) return;
+    tasks[dateKey].splice(index, 1);
+    if (tasks[dateKey].length === 0) delete tasks[dateKey];
+    localStorage.setItem('tasks', JSON.stringify(tasks));
+    showTasks(selectedDay);
+  }
+
+  function changeMonth(direction) {
+    currentDate.setMonth(currentDate.getMonth() + direction);
+    selectedDay = null;
+    updateCalendar();
+    document.querySelector('.task-display').textContent = '';
+  }
+
+  function addTask(event) {
+    event.preventDefault();
+    if (!selectedDay) {
+      alert('Please select a day first.');
+      return;
+    }
+
+    const taskInput = document.getElementById('task-input').value;
+    const timeInput = document.getElementById('time-input').value;
+    const dateKey = getDateKey(currentDate, selectedDay);
+
+    if (!tasks[dateKey]) tasks[dateKey] = [];
+    tasks[dateKey].push({ text: taskInput, time: timeInput, done: false });
+
+    localStorage.setItem("tasks", JSON.stringify(tasks));
+    document.getElementById('task-form').reset();
+    document.getElementById('add-task-form').style.display = 'none';
+    showTasks(selectedDay);
+  }
+
+  function toggleTaskForm() {
+    const form = document.getElementById('add-task-form');
+    form.style.display = form.style.display === 'none' ? 'block' : 'none';
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    updateCalendar();
+    flatpickr("#time-input", {
+      enableTime: true,
+      noCalendar: true,
+      dateFormat: "h:i K",
+      time_24hr: false
+    });
+  });
+</script>
+
+</body>
+</html>

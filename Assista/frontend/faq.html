@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>FAQ</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.tailwindcss.com?plugins=forms"></script>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;600;700&display=swap"
+    />
+    <style>
+      body {
+        font-family: 'Lexend', sans-serif;
+      }
+    </style>
+  </head>
+  <body class="bg-slate-50 min-h-screen p-6">
+    <div class="max-w-2xl mx-auto">
+      <h1 class="text-2xl font-bold text-center text-gray-800 mb-6">FAQ</h1>
+
+      <!-- Search Bar -->
+      <div class="mb-6">
+        <label class="relative block">
+          <span class="absolute inset-y-0 left-0 flex items-center pl-3">
+            <svg class="h-5 w-5 text-slate-500" viewBox="0 0 20 20" fill="currentColor">
+              <path
+                fill-rule="evenodd"
+                d="M12.9 14.32a8 8 0 111.414-1.414l5.387 5.386a1 1 0 01-1.414 1.415l-5.387-5.387zM14 8a6 6 0 11-12 0 6 6 0 0112 0z"
+                clip-rule="evenodd"
+              />
+            </svg>
+          </span>
+          <input
+            class="w-full rounded-xl bg-[#e7edf3] py-2 pl-10 pr-4 text-slate-800 placeholder:text-slate-500 focus:outline-none"
+            placeholder="Search FAQs"
+            type="text"
+          />
+        </label>
+      </div>
+
+      <!-- General -->
+      <h2 class="text-xl font-semibold text-gray-700 mb-3">General</h2>
+      <div class="space-y-2">
+        <div class="border border-gray-200 rounded-lg">
+          <button
+            class="w-full text-left px-4 py-3 flex justify-between items-center focus:outline-none"
+            onclick="toggleFaq(this)"
+          >
+            <span class="text-gray-800">How do I reset my password?</span>
+            <svg class="w-5 h-5 transition-transform transform" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 10.939l3.71-3.71a.75.75 0 111.06 1.06l-4.24 4.25a.75.75 0 01-1.06 0L5.25 8.29a.75.75 0 01-.02-1.06z" clip-rule="evenodd" />
+            </svg>
+          </button>
+          <div class="px-4 pb-3 hidden text-gray-600">
+            Click "Forgot Password" on the login screen. Follow the instructions sent to your email to reset it.
+          </div>
+        </div>
+
+        <div class="border border-gray-200 rounded-lg">
+          <button class="w-full text-left px-4 py-3 flex justify-between items-center" onclick="toggleFaq(this)">
+            <span class="text-gray-800">What are the system requirements?</span>
+            <svg class="w-5 h-5 transition-transform transform" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 10.939l3.71-3.71a.75.75 0 111.06 1.06l-4.24 4.25a.75.75 0 01-1.06 0L5.25 8.29a.75.75 0 01-.02-1.06z" clip-rule="evenodd" />
+            </svg>
+          </button>
+          <div class="px-4 pb-3 hidden text-gray-600">
+            You need an internet connection, a modern browser (Chrome, Firefox, Safari), and a device with at least 2GB RAM.
+          </div>
+        </div>
+
+        <!-- Technical Support -->
+        <div class="border border-gray-200 rounded-lg">
+          <button class="w-full text-left px-4 py-3 flex justify-between items-center" onclick="toggleFaq(this)">
+            <span class="text-gray-800">How do I contact customer support?</span>
+            <svg class="w-5 h-5 transition-transform transform" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 10.939l3.71-3.71a.75.75 0 111.06 1.06l-4.24 4.25a.75.75 0 01-1.06 0L5.25 8.29a.75.75 0 01-.02-1.06z" clip-rule="evenodd" />
+            </svg>
+          </button>
+          <div class="px-4 pb-3 hidden text-gray-600">
+            You can reach customer support via the "Contact Us" page or email us at support@assista.com.
+          </div>
+        </div>
+
+        <div class="border border-gray-200 rounded-lg">
+          <button class="w-full text-left px-4 py-3 flex justify-between items-center" onclick="toggleFaq(this)">
+            <span class="text-gray-800">Can I change my account email?</span>
+            <svg class="w-5 h-5 transition-transform transform" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 10.939l3.71-3.71a.75.75 0 111.06 1.06l-4.24 4.25a.75.75 0 01-1.06 0L5.25 8.29a.75.75 0 01-.02-1.06z" clip-rule="evenodd" />
+            </svg>
+          </button>
+          <div class="px-4 pb-3 hidden text-gray-600">
+            Yes, go to your account settings and update your email address. You may need to verify the new email.
+          </div>
+        </div>
+      </div>
+
+      <!-- Academics -->
+      <h2 class="text-xl font-semibold text-gray-700 mt-6 mb-3">Academics</h2>
+      <div class="space-y-2">
+        <div class="border border-gray-200 rounded-lg">
+          <button class="w-full text-left px-4 py-3 flex justify-between items-center" onclick="toggleFaq(this)">
+            <span class="text-gray-800">How is attendance tracked and why is it important?</span>
+            <svg class="w-5 h-5 transition-transform transform" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 10.939l3.71-3.71a.75.75 0 111.06 1.06l-4.24 4.25a.75.75 0 01-1.06 0L5.25 8.29a.75.75 0 01-.02-1.06z" clip-rule="evenodd" />
+            </svg>
+          </button>
+          <div class="px-4 pb-3 hidden text-gray-600">
+            Attendance is usually tracked via roll calls or electronic systems. It’s important because it often impacts your eligibility for exams and final grades.
+          </div>
+        </div>
+
+        <div class="border border-gray-200 rounded-lg">
+          <button class="w-full text-left px-4 py-3 flex justify-between items-center" onclick="toggleFaq(this)">
+            <span class="text-gray-800">What is the grading policy?</span>
+            <svg class="w-5 h-5 transition-transform transform" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 10.939l3.71-3.71a.75.75 0 111.06 1.06l-4.24 4.25a.75.75 0 01-1.06 0L5.25 8.29a.75.75 0 01-.02-1.06z" clip-rule="evenodd" />
+            </svg>
+          </button>
+          <div class="px-4 pb-3 hidden text-gray-600">
+            Grades are based on assignments (40%), midterms (30%), and final exams (30%). Late submissions may receive penalties.
+          </div>
+        </div>
+
+        <!-- New questions added -->
+        <div class="border border-gray-200 rounded-lg">
+          <button class="w-full text-left px-4 py-3 flex justify-between items-center" onclick="toggleFaq(this)">
+            <span class="text-gray-800">How can I customize my learning experience?</span>
+            <svg class="w-5 h-5 transition-transform transform" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 10.939l3.71-3.71a.75.75 0 111.06 1.06l-4.24 4.25a.75.75 0 01-1.06 0L5.25 8.29a.75.75 0 01-.02-1.06z" clip-rule="evenodd" />
+            </svg>
+          </button>
+          <div class="px-4 pb-3 hidden text-gray-600">
+            Use settings to adjust notifications, choose preferred subjects, and set study goals to personalize your app experience.
+          </div>
+        </div>
+
+        <div class="border border-gray-200 rounded-lg">
+          <button class="w-full text-left px-4 py-3 flex justify-between items-center" onclick="toggleFaq(this)">
+            <span class="text-gray-800">Can I sync my progress across multiple devices?</span>
+            <svg class="w-5 h-5 transition-transform transform" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 10.939l3.71-3.71a.75.75 0 111.06 1.06l-4.24 4.25a.75.75 0 01-1.06 0L5.25 8.29a.75.75 0 01-.02-1.06z" clip-rule="evenodd" />
+            </svg>
+          </button>
+          <div class="px-4 pb-3 hidden text-gray-600">
+            Yes, logging into the same account on different devices keeps your progress and settings synchronized.
+          </div>
+        </div>
+      </div>
+
+      <!-- New Section: Technical Support -->
+      <h2 class="text-xl font-semibold text-gray-700 mt-6 mb-3">Technical Support</h2>
+      <div class="space-y-2">
+        <div class="border border-gray-200 rounded-lg">
+          <button class="w-full text-left px-4 py-3 flex justify-between items-center" onclick="toggleFaq(this)">
+            <span class="text-gray-800">I'm having trouble logging in, what should I do?</span>
+            <svg class="w-5 h-5 transition-transform transform" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 10.939l3.71-3.71a.75.75 0 111.06 1.06l-4.24 4.25a.75.75 0 01-1.06 0L5.25 8.29a.75.75 0 01-.02-1.06z" clip-rule="evenodd" />
+            </svg>
+          </button>
+          <div class="px-4 pb-3 hidden text-gray-600">
+            Try resetting your password first. If the problem persists, clear your browser cache or try a different browser.
+          </div>
+        </div>
+
+        <div class="border border-gray-200 rounded-lg">
+          <button class="w-full text-left px-4 py-3 flex justify-between items-center" onclick="toggleFaq(this)">
+            <span class="text-gray-800">How do I report a bug?</span>
+            <svg class="w-5 h-5 transition-transform transform" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 10.939l3.71-3.71a.75.75 0 111.06 1.06l-4.24 4.25a.75.75 0 01-1.06 0L5.25 8.29a.75.75 0 01-.02-1.06z" clip-rule="evenodd" />
+            </svg>
+          </button>
+          <div class="px-4 pb-3 hidden text-gray-600">
+            Please use the "Report a Bug" form found in your account dashboard or email techsupport@assista.com.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      function toggleFaq(button) {
+        const answer = button.nextElementSibling;
+        const icon = button.querySelector("svg");
+        answer.classList.toggle("hidden");
+        icon.classList.toggle("rotate-180");
+      }
+    </script>
+  </body>
+</html>

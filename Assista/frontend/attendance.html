@@ -1,0 +1,325 @@
+<html>
+  <head>
+    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin="" />
+    <link
+      rel="stylesheet"
+      as="style"
+      onload="this.rel='stylesheet'"
+      href="https://fonts.googleapis.com/css2?display=swap&family=Lexend%3Awght%40400%3B500%3B700%3B900&family=Noto+Sans%3Awght%40400%3B500%3B700%3B900"
+    />
+
+    <title>Attendance Tracker</title>
+    <link rel="icon" type="image/x-icon" href="data:image/x-icon;base64," />
+
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <style>
+      body {
+        font-family: Lexend, "Noto Sans", sans-serif;
+        background: linear-gradient(135deg, #f5f7fa 0%, #c3dee2 100%);
+      }
+      
+      .attendance-card {
+        background: white;
+        border-radius: 16px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+      }
+      
+      .attendance-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+      }
+      
+      .header-gradient {
+        background: linear-gradient(135deg, #667eea 0%, #5dc1d7 100%);
+      }
+      
+      .progress-bar {
+        background: #e5e7eb;
+        border-radius: 10px;
+        overflow: hidden;
+        height: 8px;
+      }
+      
+      .progress-fill {
+        height: 100%;
+        border-radius: 10px;
+        transition: width 0.3s ease;
+      }
+      
+      .subject-card {
+        background: white;
+        border-radius: 12px;
+        padding: 20px;
+        margin-bottom: 16px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+        border-left: 4px solid #667eea;
+        transition: all 0.3s ease;
+      }
+      
+      .subject-card:hover {
+        transform: translateX(5px);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+      }
+      
+      .attendance-excellent { border-left-color: #10b981; }
+      .attendance-good { border-left-color: #3b82f6; }
+      .attendance-warning { border-left-color: #f59e0b; }
+      .attendance-danger { border-left-color: #ef4444; }
+    </style>
+  </head>
+  <body class="min-h-screen p-4">
+    <div class="max-w-md mx-auto">
+      <!-- Header -->
+      <div class="attendance-card mb-6 overflow-hidden">
+        <div class="header-gradient text-white p-6">
+          <div class="flex items-center justify-between mb-4">
+            <button onclick="window.location.href='dashboard.html'" class="text-white hover:text-gray-200">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" fill="currentColor" viewBox="0 0 256 256">
+                <path d="M224,128a8,8,0,0,1-8,8H59.31l58.35,58.34a8,8,0,0,1-11.32,11.32l-72-72a8,8,0,0,1,0-11.32l72-72a8,8,0,0,1,11.32,11.32L59.31,120H216A8,8,0,0,1,224,128Z"></path>
+              </svg>
+            </button>
+            <h2 class="text-xl font-bold">Attendance Tracker</h2>
+            <div class="w-6"></div>
+          </div>
+          
+          <div class="text-center">
+            <div class="text-4xl font-bold mb-2" id="overallPercentage">92%</div>
+            <p class="text-white text-opacity-80">Overall Attendance</p>
+          </div>
+        </div>
+        
+        <!-- Stats Cards -->
+        <div class="p-6">
+          <div class="grid grid-cols-2 gap-4">
+            <div class="text-center">
+              <div class="text-2xl font-bold text-gray-800" id="totalClasses">120</div>
+              <p class="text-sm text-gray-600">Total Classes</p>
+            </div>
+            <div class="text-center">
+              <div class="text-2xl font-bold text-green-600" id="attendedClasses">110</div>
+              <p class="text-sm text-gray-600">Attended</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Subject-wise Attendance -->
+      <div class="mb-6">
+  <h3 class="text-xl font-bold text-gray-800 mb-4 px-2">Subject Attendance</h3>
+
+  <!-- Rounded container -->
+  <div class="bg-white rounded-2xl shadow-md p-4 space-y-3">
+    <!-- Static subject cards as fallback or initial view -->
+    <div class="flex items-center gap-4 bg-gray-50 px-4 min-h-[72px] py-2 justify-between rounded-lg">
+      <div class="flex flex-col justify-center">
+        <p class="text-[#101418] text-base font-medium leading-normal line-clamp-1">Mathematics-2</p>
+        <p class="text-[#5c718a] text-sm font-normal leading-normal line-clamp-2">95% Attendance</p>
+      </div>
+      <div class="shrink-0">
+        <p class="text-[#101418] text-base font-normal leading-normal">Can Skip: 2</p>
+      </div>
+    </div>
+
+    <div class="flex items-center gap-4 bg-gray-50 px-4 min-h-[72px] py-2 justify-between rounded-lg">
+      <div class="flex flex-col justify-center">
+        <p class="text-[#101418] text-base font-medium leading-normal line-clamp-1">Engineering Physics</p>
+        <p class="text-[#5c718a] text-sm font-normal leading-normal line-clamp-2">88% Attendance</p>
+      </div>
+      <div class="shrink-0">
+        <p class="text-[#101418] text-base font-normal leading-normal">Can Skip: 1</p>
+      </div>
+    </div>
+
+    <div class="flex items-center gap-4 bg-gray-50 px-4 min-h-[72px] py-2 justify-between rounded-lg">
+      <div class="flex flex-col justify-center">
+        <p class="text-[#101418] text-base font-medium leading-normal line-clamp-1">Scientific Programming</p>
+        <p class="text-[#5c718a] text-sm font-normal leading-normal line-clamp-2">90% Attendance</p>
+      </div>
+      <div class="shrink-0">
+        <p class="text-[#101418] text-base font-normal leading-normal">Can Skip: 3</p>
+      </div>
+    </div>
+
+    <div class="flex items-center gap-4 bg-gray-50 px-4 min-h-[72px] py-2 justify-between rounded-lg">
+      <div class="flex flex-col justify-center">
+        <p class="text-[#101418] text-base font-medium leading-normal line-clamp-1">Basic Electrical Engineering</p>
+        <p class="text-[#5c718a] text-sm font-normal leading-normal line-clamp-2">92% Attendance</p>
+      </div>
+      <div class="shrink-0">
+        <p class="text-[#101418] text-base font-normal leading-normal">Can Skip: 4</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+      <!-- Attendance Tips -->
+      <div class="attendance-card p-6 mb-6">
+        <h3 class="text-lg font-bold text-gray-800 mb-3">📊 Attendance Tips</h3>
+        <div class="space-y-3 text-sm text-gray-600">
+          <div class="flex items-start space-x-2">
+            <span class="text-green-500">✓</span>
+            <p>Maintain 75% attendance to be eligible for exams</p>
+          </div>
+          <div class="flex items-start space-x-2">
+            <span class="text-blue-500">ℹ</span>
+            <p>Medical leave requires proper documentation</p>
+          </div>
+          <div class="flex items-start space-x-2">
+            <span class="text-orange-500">⚠</span>
+            <p>Below 75% may result in detention</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Actions -->
+      <div class="attendance-card p-6">
+        <h3 class="text-lg font-bold text-gray-800 mb-3">Quick Actions</h3>
+        <div class="space-y-3">
+          <button onclick="window.location.href='http://localhost:5173'" class="w-full bg-blue-500 hover:bg-blue-600 text-white py-3 px-4 rounded-lg font-medium transition-colors">
+            Apply for Leave
+          </button>
+          <button onclick="downloadAttendanceReport()" class="w-full bg-gray-500 hover:bg-gray-600 text-white py-3 px-4 rounded-lg font-medium transition-colors">
+            Download Report
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <script src="data.js"></script>
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        loadAttendanceData();
+      });
+
+      function loadAttendanceData() {
+        const user = getCurrentUser();
+        if (!user) {
+          alert('Please login first.');
+          window.location.href = 'index.html';
+          return;
+        }
+
+        const attendance = user.attendance;
+        
+        // Update overall stats
+        document.getElementById('overallPercentage').textContent = attendance.overall + '%';
+        
+        // Calculate total classes and attended
+        let totalClasses = 0;
+        let attendedClasses = 0;
+        
+        Object.values(attendance.subjects).forEach(subject => {
+          totalClasses += subject.total;
+          attendedClasses += subject.attended;
+        });
+        
+        document.getElementById('totalClasses').textContent = totalClasses;
+        document.getElementById('attendedClasses').textContent = attendedClasses;
+        
+        // Populate subject-wise attendance
+        const subjectContainer = document.getElementById('subjectAttendance');
+        subjectContainer.innerHTML = '';
+        
+        Object.entries(attendance.subjects).forEach(([subjectName, data]) => {
+          const card = createSubjectCard(subjectName, data);
+          subjectContainer.appendChild(card);
+        });
+      }
+
+      function createSubjectCard(subjectName, data) {
+        const card = document.createElement('div');
+        const percentage = data.percentage;
+        
+        // Determine card style based on attendance percentage
+        let cardClass = 'subject-card ';
+        let statusColor = '';
+        let canSkip = Math.max(0, Math.floor((data.attended - 0.75 * data.total) / 0.75));
+        
+        if (percentage >= 90) {
+          cardClass += 'attendance-excellent';
+          statusColor = 'text-green-600';
+        } else if (percentage >= 80) {
+          cardClass += 'attendance-good';
+          statusColor = 'text-blue-600';
+        } else if (percentage >= 75) {
+          cardClass += 'attendance-warning';
+          statusColor = 'text-orange-600';
+        } else {
+          cardClass += 'attendance-danger';
+          statusColor = 'text-red-600';
+        }
+        
+        card.className = cardClass;
+        card.innerHTML = `
+          <div class="flex justify-between items-start mb-3">
+            <div class="flex-1">
+              <h4 class="font-semibold text-gray-800 text-sm">${subjectName}</h4>
+              <p class="text-xs text-gray-500">${data.attended}/${data.total} classes</p>
+            </div>
+            <div class="text-right">
+              <div class="text-lg font-bold ${statusColor}">${percentage}%</div>
+              <p class="text-xs text-gray-500">Can skip: ${canSkip}</p>
+            </div>
+          </div>
+          
+          <div class="progress-bar mb-2">
+            <div class="progress-fill ${getProgressColor(percentage)}" style="width: ${percentage}%"></div>
+          </div>
+          
+          <div class="flex justify-between text-xs text-gray-500">
+            <span>Attendance</span>
+            <span>${getAttendanceStatus(percentage)}</span>
+          </div>
+        `;
+        
+        return card;
+      }
+
+      function getProgressColor(percentage) {
+        if (percentage >= 90) return 'bg-green-500';
+        if (percentage >= 80) return 'bg-blue-500';
+        if (percentage >= 75) return 'bg-orange-500';
+        return 'bg-red-500';
+      }
+
+      function getAttendanceStatus(percentage) {
+        if (percentage >= 90) return 'Excellent';
+        if (percentage >= 80) return 'Good';
+        if (percentage >= 75) return 'Satisfactory';
+        return 'Below Required';
+      }
+
+
+      function downloadAttendanceReport() {
+        const user = getCurrentUser();
+        if (!user) return;
+        
+        // Create a simple text report
+        let report = `ATTENDANCE REPORT\n`;
+        report += `Student: ${user.name}\n`;
+        report += `Roll No: ${user.rollNo}\n`;
+        report += `Overall Attendance: ${user.attendance.overall}%\n\n`;
+        report += `SUBJECT-WISE BREAKDOWN:\n`;
+        report += `${'='.repeat(40)}\n`;
+        
+        Object.entries(user.attendance.subjects).forEach(([subject, data]) => {
+          report += `${subject}:\n`;
+          report += `  Attended: ${data.attended}/${data.total} (${data.percentage}%)\n\n`;
+        });
+        
+        // Create and download file
+        const blob = new Blob([report], { type: 'text/plain' });
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `attendance_report_${user.rollNo}.txt`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        window.URL.revokeObjectURL(url);
+      }
+    </script>
+  </body>
+</html>
