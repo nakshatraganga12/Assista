@@ -15,7 +15,10 @@ app.add_middleware(
 )
 
 # --- MongoDB connection ---
-client = AsyncIOMotorClient("mongodb://localhost:27017")
+client = AsyncIOMotorClient(
+    "mongodb+srv://nakshatraganga12_db_user:OtK5XLy72oskTSSf@assista.splthgz.mongodb.net/assista_db?retryWrites=true&w=majority"
+)
+
 db = client["assista_db"]
 users_collection = db["users"]
 
